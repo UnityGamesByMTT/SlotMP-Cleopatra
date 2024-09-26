@@ -10,47 +10,52 @@ public class ManageLineButtons : MonoBehaviour, IPointerEnterHandler,IPointerExi
 {
 
 	[SerializeField]
-	private SlotBehaviour slotManager;
+	private PayoutCalculation payManager;
 	[SerializeField]
-	private TMP_Text num_text;
-
+	private int num;
+	private bool isEnabled = false;
 
 	public void OnPointerEnter(PointerEventData eventData)
 	{
-		//if (Application.platform == RuntimePlatform.WebGLPlayer && !Application.isMobilePlatform)
-		//{
-			//Debug.Log("run on pointer enter");
-			slotManager.GenerateStaticLine(num_text);
-		//}
+		if (num <= 20)
+		{
+			isEnabled = true;
+		}
+		else
+		{
+			isEnabled = false;
+		}
+		if (isEnabled)
+			payManager.GeneratePayoutLinesBackend(num - 1);
 	}
+
 	public void OnPointerExit(PointerEventData eventData)
 	{
-		//if (Application.platform == RuntimePlatform.WebGLPlayer && !Application.isMobilePlatform)
-		//{
-			//Debug.Log("run on pointer exit");
-			slotManager.DestroyStaticLine();
-		//}
+		if (isEnabled)
+			payManager.ResetStaticLine();
 	}
+
 	public void OnPointerDown(PointerEventData eventData)
 	{
 		if (Application.platform == RuntimePlatform.WebGLPlayer && Application.isMobilePlatform)
 		{
 			this.gameObject.GetComponent<Button>().Select();
-			//Debug.Log("run on pointer down");
-			slotManager.GenerateStaticLine(num_text);
+			Debug.Log("run on pointer down");
+			payManager.GeneratePayoutLinesBackend(num - 1);
 		}
 	}
+
 	public void OnPointerUp(PointerEventData eventData)
 	{
 		if (Application.platform == RuntimePlatform.WebGLPlayer && Application.isMobilePlatform)
 		{
-			//Debug.Log("run on pointer up");
-			slotManager.DestroyStaticLine();
+			Debug.Log("run on pointer up");
+			payManager.ResetStaticLine();
 			DOVirtual.DelayedCall(0.1f, () =>
 			{
 				this.gameObject.GetComponent<Button>().spriteState = default;
 				EventSystem.current.SetSelectedGameObject(null);
-			 });
+			});
 		}
 	}
 }
