@@ -36,6 +36,14 @@ public class BonusController : MonoBehaviour
 
     private int stopIndex = 0;
 
+    [SerializeField] private ImageAnimation BonusOpen_ImageAnimation;
+    [SerializeField] private ImageAnimation BonusClose_ImageAnimation;
+    //[SerializeField] private GameObject BonusGameButtonPanel_Object;
+    [SerializeField] private GameObject BonusGame_Panel;
+    [SerializeField] private GameObject BonusClosingUI;
+
+    private Coroutine BonusRoutine;
+
 
     private void Start()
     {
@@ -43,17 +51,57 @@ public class BonusController : MonoBehaviour
         if (Spin_Button) Spin_Button.onClick.AddListener(Spinbutton);
     }
 
-    internal void StartBonus(int stop)
+    internal void StartBonus()
     {
-        ResetColliders();
-        if (PopupPanel) PopupPanel.SetActive(false);
-        if (Win_Transform) Win_Transform.gameObject.SetActive(false);
-        if (Loose_Transform) Loose_Transform.gameObject.SetActive(false);
-        if (_audioManager) _audioManager.SwitchBGSound(true);
-        if (Spin_Button) Spin_Button.interactable = true;
-        stopIndex = stop;
-        if (Bonus_Object) Bonus_Object.SetActive(true);
+        //ResetColliders();
+        //if (PopupPanel) PopupPanel.SetActive(false);
+        //if (Win_Transform) Win_Transform.gameObject.SetActive(false);
+        //if (Loose_Transform) Loose_Transform.gameObject.SetActive(false);
+        //if (_audioManager) _audioManager.SwitchBGSound(true);
+        //if (Spin_Button) Spin_Button.interactable = true;
+        //stopIndex = stop;
+        //if (Bonus_Object) Bonus_Object.SetActive(true);
+
+        if (BonusGame_Panel) BonusGame_Panel.SetActive(true);
+        if (BonusOpen_ImageAnimation) BonusOpen_ImageAnimation.StartAnimation();
+
+        if (BonusRoutine != null)
+        {
+            StopCoroutine(BonusRoutine);
+            BonusRoutine = null;
+        }
+        BonusRoutine = StartCoroutine(BonusGameRoutine());
     }
+
+    private IEnumerator BonusGameRoutine()
+    {
+        Debug.Log("Started Routine");
+
+        yield return new WaitUntil(() => BonusOpen_ImageAnimation.textureArray[BonusOpen_ImageAnimation.textureArray.Count-1] == BonusOpen_ImageAnimation.rendererDelegate.sprite);
+
+        Debug.Log("Here");
+
+        yield return new WaitForSeconds(2f);
+
+        slotManager.FreeSpin(1);
+
+        Debug.Log("Started");
+
+        //make all the lines below a function to end the bonus game
+
+        yield return new WaitUntil(() => !slotManager.IsFreeSpin);
+
+        yield return new WaitForSeconds(2f);
+
+        BonusClose_ImageAnimation.StartAnimation();
+
+        yield return new WaitUntil(() => BonusClose_ImageAnimation.textureArray[15] == BonusOpen_ImageAnimation.rendererDelegate.sprite);
+        BonusClose_ImageAnimation.PauseAnimation();
+        BonusClosingUI.SetActive(true);
+
+        yield return new WaitForSeconds(2f);
+        BonusClosingUI.SetActive(false);
+    } 
 
     private void Spinbutton()
     {

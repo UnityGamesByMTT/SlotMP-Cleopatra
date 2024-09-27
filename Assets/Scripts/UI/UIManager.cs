@@ -103,21 +103,21 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject SoundOff_Object;
 
-    [Header("Win Popup")]
+    [Header("Big Win Popup")]
+    //[SerializeField]
+    //private Sprite BigWin_Sprite;
+    //[SerializeField]
+    //private Sprite HugeWin_Sprite;
+    //[SerializeField]
+    //private Sprite MegaWin_Sprite;
+    //[SerializeField]
+    //private Sprite Jackpot_Sprite;
     [SerializeField]
-    private Sprite BigWin_Sprite;
+    private Image BigWin_Image;
     [SerializeField]
-    private Sprite HugeWin_Sprite;
+    private GameObject BigWinPopup_Object;
     [SerializeField]
-    private Sprite MegaWin_Sprite;
-    [SerializeField]
-    private Sprite Jackpot_Sprite;
-    [SerializeField]
-    private Image Win_Image;
-    [SerializeField]
-    private GameObject WinPopup_Object;
-    [SerializeField]
-    private TMP_Text Win_Text;
+    private TMP_Text BigWin_Text;
 
     [Header("FreeSpins Popup")]
     [SerializeField]
@@ -339,23 +339,23 @@ public class UIManager : MonoBehaviour
 
     internal void PopulateWin(int value, double amount)
     {
-        switch(value)
-        {
-            case 1:
-                if (Win_Image) Win_Image.sprite = BigWin_Sprite;
-                break;
-            case 2:
-                if (Win_Image) Win_Image.sprite = HugeWin_Sprite;
-                break;
-            case 3:
-                if (Win_Image) Win_Image.sprite = MegaWin_Sprite;
-                break;
-            case 4:
-                if (Win_Image) Win_Image.sprite = Jackpot_Sprite;
-                break;
-        }
+        //switch(value)
+        //{
+        //    case 1:
+        //        if (Win_Image) Win_Image.sprite = BigWin_Sprite;
+        //        break;
+        //    case 2:
+        //        if (Win_Image) Win_Image.sprite = HugeWin_Sprite;
+        //        break;
+        //    case 3:
+        //        if (Win_Image) Win_Image.sprite = MegaWin_Sprite;
+        //        break;
+        //    case 4:
+        //        if (Win_Image) Win_Image.sprite = Jackpot_Sprite;
+        //        break;
+        //}
 
-        StartPopupAnim(amount);
+        //StartPopupAnim(amount);
     }
 
     private void StartFreeSpins(int spins)
@@ -372,21 +372,33 @@ public class UIManager : MonoBehaviour
         if (Free_Text) Free_Text.text = spins.ToString() + " Free spins awarded.";
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
     }
-
-    private void StartPopupAnim(double amount)
+        
+    internal void StartBigWinPopupAnim()
     {
-        int initAmount = 0;
-        if (WinPopup_Object) WinPopup_Object.SetActive(true);
+        //double initAmount = 0;
+        //try
+        //{
+        //    amount = double.Parse(amount.ToString("f2"));
+        //}
+        //catch (Exception e)
+        //{
+        //    Debug.Log("Error while conversion " + e.Message);
+        //}
+
+        if (BigWinPopup_Object) BigWinPopup_Object.SetActive(true);
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
 
-        DOTween.To(() => initAmount, (val) => initAmount = val, (int)amount, 5f).OnUpdate(() =>
-        {
-            if (Win_Text) Win_Text.text = initAmount.ToString();
-        });
+        BigWin_Image.rectTransform.DOScale(new Vector3(1, 1, 1), .5f);
 
-        DOVirtual.DelayedCall(6f, () =>
+        //DOTween.To(() => initAmount, (val) => initAmount = val, amount, .8f).OnUpdate(() =>
+        //{
+        //    if (BigWin_Text) BigWin_Text.text = initAmount.ToString("f2");
+        //});
+
+        DOVirtual.DelayedCall(3f, () =>
         {
-            ClosePopup(WinPopup_Object);
+            BigWin_Image.rectTransform.DOScale(Vector3.zero, .5f).OnComplete(() => ClosePopup(BigWinPopup_Object));
+            //ClosePopup(BigWinPopup_Object);
             slotManager.CheckPopups = false;
         });
     }
