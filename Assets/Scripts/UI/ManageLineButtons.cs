@@ -1,18 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using TMPro;
 using DG.Tweening;
 
 public class ManageLineButtons : MonoBehaviour, IPointerEnterHandler,IPointerExitHandler, IPointerUpHandler,IPointerDownHandler
 {
 
-	[SerializeField]
-	private PayoutCalculation payManager;
-	[SerializeField]
-	private int num;
+	[SerializeField] private PayoutCalculation payManager;
+	[SerializeField] private int num;
 	private bool isEnabled = false;
 
 	public void OnPointerEnter(PointerEventData eventData)
@@ -39,8 +34,8 @@ public class ManageLineButtons : MonoBehaviour, IPointerEnterHandler,IPointerExi
 	{
 		if (Application.platform == RuntimePlatform.WebGLPlayer && Application.isMobilePlatform)
 		{
+			//Debug.Log("run on pointer down");
 			this.gameObject.GetComponent<Button>().Select();
-			Debug.Log("run on pointer down");
 			payManager.GeneratePayoutLinesBackend(num - 1);
 		}
 	}
@@ -49,7 +44,7 @@ public class ManageLineButtons : MonoBehaviour, IPointerEnterHandler,IPointerExi
 	{
 		if (Application.platform == RuntimePlatform.WebGLPlayer && Application.isMobilePlatform)
 		{
-			Debug.Log("run on pointer up");
+			//Debug.Log("run on pointer up");
 			payManager.ResetStaticLine();
 			DOVirtual.DelayedCall(0.1f, () =>
 			{

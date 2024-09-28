@@ -46,8 +46,6 @@ public class UIManager : MonoBehaviour
     private RectTransform Exit_RT;
 
     [SerializeField]
-    private Button Paytable_Button;
-    [SerializeField]
     private GameObject Paytable_Object;
     [SerializeField]
     private RectTransform Paytable_RT;
@@ -56,7 +54,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject MainPopup_Object;
 
-    [Header("About Popup")]
+    [Header("About Popup")] 
     [SerializeField]
     private GameObject AboutPopup_Object;
     [SerializeField]
@@ -84,7 +82,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TMP_Text Wild_Text;
 
-    [Header("Settings Popup")]
+    [Header("Settings Popup")] //NOT USED
     [SerializeField]
     private GameObject SettingsPopup_Object;
     [SerializeField]
@@ -104,14 +102,6 @@ public class UIManager : MonoBehaviour
     private GameObject SoundOff_Object;
 
     [Header("Big Win Popup")]
-    //[SerializeField]
-    //private Sprite BigWin_Sprite;
-    //[SerializeField]
-    //private Sprite HugeWin_Sprite;
-    //[SerializeField]
-    //private Sprite MegaWin_Sprite;
-    //[SerializeField]
-    //private Sprite Jackpot_Sprite;
     [SerializeField]
     private Image BigWin_Image;
     [SerializeField]
@@ -163,7 +153,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject LBPopup_Object;
 
-    [Header("Quit Popup")]
+    [Header("Quit Popup")] //not used made new ones
     [SerializeField]
     private GameObject QuitPopup_Object;
     [SerializeField]
@@ -172,6 +162,18 @@ public class UIManager : MonoBehaviour
     private Button NoQuit_Button;
     [SerializeField]
     private Button CrossQuit_Button;
+
+    [Header("Menu Buttons")]
+    [SerializeField] private Button AudioON_Button;
+    [SerializeField] private Button AudioOFF_Button;
+    [SerializeField] private Button Paytable_Button;
+    [SerializeField] private Button PaytableClose_Button;
+    [SerializeField] private Button Quit_Button;
+    [SerializeField] private Button QuitYes_Button;
+    [SerializeField] private Button QuitNo_Button;
+
+    [SerializeField] private GameObject QuitMenuObject;
+    [SerializeField] private GameObject PaytableMenuObject;
 
     [SerializeField]
     private AudioController audioController;
@@ -192,14 +194,6 @@ public class UIManager : MonoBehaviour
     private bool isExit = false;
 
     private int FreeSpins;
-
-
-    private void Awake()
-    {
-        //if (Loading_Object) Loading_Object.SetActive(true);
-        //StartCoroutine(LoadingRoutine());
-        SimulateClickByDefault();
-    }
 
     private IEnumerator LoadingRoutine()
     {
@@ -237,7 +231,6 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-
         if (Menu_Button) Menu_Button.onClick.RemoveAllListeners();
         if (Menu_Button) Menu_Button.onClick.AddListener(OpenMenu);
 
@@ -306,13 +299,55 @@ public class UIManager : MonoBehaviour
         if (Music_Button) Music_Button.onClick.RemoveAllListeners();
         if (Music_Button) Music_Button.onClick.AddListener(ToggleMusic);
 
+        if (AudioON_Button) AudioON_Button.onClick.RemoveAllListeners();
+        if (AudioON_Button) AudioON_Button.onClick.AddListener(delegate { AudioOnOFF(false); });
+
+        if (AudioOFF_Button) AudioOFF_Button.onClick.RemoveAllListeners();
+        if (AudioOFF_Button) AudioOFF_Button.onClick.AddListener(delegate { AudioOnOFF(true); });
+
+        if (Quit_Button) Quit_Button.onClick.RemoveAllListeners();
+        if (Quit_Button) Quit_Button.onClick.AddListener(OpenQuitPanel);
+
+        if (QuitNo_Button) QuitNo_Button.onClick.RemoveAllListeners();
+        if (QuitNo_Button) QuitNo_Button.onClick.AddListener(delegate { ClosePopup(QuitMenuObject); });
+
+        if (YesQuit_Button) YesQuit_Button.onClick.RemoveAllListeners();
+        if (YesQuit_Button) YesQuit_Button.onClick.AddListener(CallOnExitFunction);
+
+        if (Paytable_Button) Paytable_Button.onClick.RemoveAllListeners();
+        if (Paytable_Button) Paytable_Button.onClick.AddListener(OpenPaytablePanel);
+
+        if (PaytableClose_Button) PaytableClose_Button.onClick.RemoveAllListeners();
+        if (PaytableClose_Button) PaytableClose_Button.onClick.AddListener(delegate { ClosePopup(PaytableMenuObject); });
+
     }
 
-    private void SimulateClickByDefault()
+    private void AudioOnOFF(bool state)
     {
-        Debug.Log("Awaken The Game...");
-        m_AwakeGameButton.onClick.AddListener(() => { Debug.Log("Called The Game..."); });
-        m_AwakeGameButton.onClick.Invoke();
+        if (state) //turning audio on
+        {
+            AudioOFF_Button.gameObject.SetActive(false);
+            AudioON_Button.gameObject.SetActive(true);
+            audioController.ToggleMute(false);
+        }
+        else //turning audio off
+        {
+            AudioOFF_Button.gameObject.SetActive(true);
+            AudioON_Button.gameObject.SetActive(false);
+            audioController.ToggleMute(true);
+        }
+    }
+
+    private void OpenQuitPanel()
+    {
+        if (MainPopup_Object) MainPopup_Object.SetActive(true);
+        if (QuitMenuObject) QuitMenuObject.SetActive(true);
+    }
+
+    private void OpenPaytablePanel()
+    {
+        if (MainPopup_Object) MainPopup_Object.SetActive(true);
+        if (PaytableMenuObject) PaytableMenuObject.SetActive(true);
     }
 
     internal void LowBalPopup()
@@ -337,27 +372,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    internal void PopulateWin(int value, double amount)
-    {
-        //switch(value)
-        //{
-        //    case 1:
-        //        if (Win_Image) Win_Image.sprite = BigWin_Sprite;
-        //        break;
-        //    case 2:
-        //        if (Win_Image) Win_Image.sprite = HugeWin_Sprite;
-        //        break;
-        //    case 3:
-        //        if (Win_Image) Win_Image.sprite = MegaWin_Sprite;
-        //        break;
-        //    case 4:
-        //        if (Win_Image) Win_Image.sprite = Jackpot_Sprite;
-        //        break;
-        //}
-
-        //StartPopupAnim(amount);
-    }
-
     private void StartFreeSpins(int spins)
     {
         if (MainPopup_Object) MainPopup_Object.SetActive(false);
@@ -375,25 +389,10 @@ public class UIManager : MonoBehaviour
         
     internal void StartBigWinPopupAnim()
     {
-        //double initAmount = 0;
-        //try
-        //{
-        //    amount = double.Parse(amount.ToString("f2"));
-        //}
-        //catch (Exception e)
-        //{
-        //    Debug.Log("Error while conversion " + e.Message);
-        //}
-
         if (BigWinPopup_Object) BigWinPopup_Object.SetActive(true);
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
 
         BigWin_Image.rectTransform.DOScale(new Vector3(1, 1, 1), .5f);
-
-        //DOTween.To(() => initAmount, (val) => initAmount = val, amount, .8f).OnUpdate(() =>
-        //{
-        //    if (BigWin_Text) BigWin_Text.text = initAmount.ToString("f2");
-        //});
 
         DOVirtual.DelayedCall(3f, () =>
         {

@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI.Extensions;
 
 public class PayoutCalculation : MonoBehaviour
 {
@@ -18,7 +16,6 @@ public class PayoutCalculation : MonoBehaviour
         if (index >= 0)
         {
             LineObjetcs[index].SetActive(true);
-            print("line object name" + LineObjetcs[index].name);
             return;
         }
         DontDestroyLines.Clear();
