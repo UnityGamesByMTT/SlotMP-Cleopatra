@@ -30,6 +30,8 @@ public class SocketIOManager : MonoBehaviour
     internal List<string> bonusdata = null;
     //WebSocket currentSocket = null;
     internal bool isResultdone = false;
+    internal List<List<int>> LineData = null;
+
 
     private SocketManager manager;
 

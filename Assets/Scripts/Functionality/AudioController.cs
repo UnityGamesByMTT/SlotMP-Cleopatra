@@ -41,7 +41,6 @@ public class AudioController : MonoBehaviour
                 StopWLAaudio();
             }
             if (!audioPlayer_button.mute) audioPlayer_button.UnPause();
-
         }
     }
 
@@ -107,7 +106,6 @@ public class AudioController : MonoBehaviour
         StopBonusAaudio();
         audioPlayer_Bonus.clip = Bonusclips[index];
         audioPlayer_Bonus.Play();
-
     }
 
     internal void PlayButtonAudio()

@@ -21,12 +21,6 @@ public class BonusController : MonoBehaviour
         if (FSnum_Text) FSnum_Text.text = freespins.ToString();
         if (BonusGame_Panel) BonusGame_Panel.SetActive(true);
         if (BonusOpen_ImageAnimation) BonusOpen_ImageAnimation.StartAnimation();
-
-        if (BonusRoutine != null)
-        {
-            StopCoroutine(BonusRoutine);
-            BonusRoutine = null;
-        }
         BonusRoutine = StartCoroutine(BonusGameRoutine(freespins));
     }
 
