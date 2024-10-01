@@ -52,8 +52,10 @@ public class UIManager : MonoBehaviour
     private GameObject LBPopup_Object;
 
     [Header("Audio Objects")]
-    [SerializeField] private Button AudioON_Button;
-    [SerializeField] private Button AudioOFF_Button;
+    [SerializeField] private GameObject Settings_Object;
+    [SerializeField] private Button SettingsQuit_Button;
+    [SerializeField] private Button Sound_Button;
+    [SerializeField] private Button Music_Button;
 
     [Header("Paytable Objects")]
     [SerializeField] private GameObject PaytableMenuObject;
@@ -66,6 +68,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button QuitNo_Button;
     [SerializeField] private GameObject QuitMenuObject;
 
+    [Header("Menu Objects")]
+    [SerializeField] private Button Menu_Button;
+    [SerializeField] private Button Info_Button;
+    [SerializeField] private Button Settings_Button;
+    [SerializeField] private RectTransform Info_BttnTransform;
+    [SerializeField] private RectTransform Settings_BttnTransform;
+
+
     [SerializeField]
     private AudioController audioController;
 
@@ -77,6 +87,7 @@ public class UIManager : MonoBehaviour
     private bool isMusic = true;
     private bool isSound = true;
     private bool isExit = false;
+    private bool isMenu = false;
 
     private int FreeSpins;
 
@@ -91,16 +102,31 @@ public class UIManager : MonoBehaviour
         if (CloseAD_Button) CloseAD_Button.onClick.RemoveAllListeners();
         if (CloseAD_Button) CloseAD_Button.onClick.AddListener(CallOnExitFunction);
 
-        if (audioController) audioController.ToggleMute(false);
+        if (Sound_Button) Sound_Button.onClick.RemoveAllListeners();
+        if (Sound_Button) Sound_Button.onClick.AddListener(delegate
+        {
+            if (isSound)
+            {
+                SoundOnOFF(false);
+            }
+            else
+            {
+                SoundOnOFF(true);
+            }
+        });
 
-        isMusic = true;
-        isSound = true;
+        if (Music_Button) Music_Button.onClick.RemoveAllListeners();
+        if (Music_Button) Music_Button.onClick.AddListener(delegate {
 
-        if (AudioON_Button) AudioON_Button.onClick.RemoveAllListeners();
-        if (AudioON_Button) AudioON_Button.onClick.AddListener(delegate { AudioOnOFF(false); });
-
-        if (AudioOFF_Button) AudioOFF_Button.onClick.RemoveAllListeners();
-        if (AudioOFF_Button) AudioOFF_Button.onClick.AddListener(delegate { AudioOnOFF(true); });
+            if (isMusic)
+            {
+                MusicONOFF(false);
+            }
+            else
+            {
+                MusicONOFF(true);
+            }
+        });
 
         if (Quit_Button) Quit_Button.onClick.RemoveAllListeners();
         if (Quit_Button) Quit_Button.onClick.AddListener(OpenQuitPanel);
@@ -117,22 +143,118 @@ public class UIManager : MonoBehaviour
         if (PaytableClose_Button) PaytableClose_Button.onClick.RemoveAllListeners();
         if (PaytableClose_Button) PaytableClose_Button.onClick.AddListener(delegate { ClosePopup(PaytableMenuObject); });
 
+        if (Menu_Button) Menu_Button.onClick.RemoveAllListeners();
+        if (Menu_Button) Menu_Button.onClick.AddListener(delegate {
+            if (!isMenu)
+            {
+                OpenCloseMenu(true);
+            }
+            else
+            {
+                OpenCloseMenu(false);
+            }
+        });
+
+        if (Settings_Button) Settings_Button.onClick.RemoveAllListeners();
+        if (Settings_Button) Settings_Button.onClick.AddListener(OpenSettingsPanel);
+
+        if (SettingsQuit_Button) SettingsQuit_Button.onClick.RemoveAllListeners();
+        if (SettingsQuit_Button) SettingsQuit_Button.onClick.AddListener(delegate { ClosePopup(Settings_Object); });
     }
 
-    private void AudioOnOFF(bool state)
+    private void OpenCloseMenu(bool toggle)
     {
-        if (state) //turning audio on
+        audioController.PlayButtonAudio();
+        if (toggle)
         {
-            AudioOFF_Button.gameObject.SetActive(false);
-            AudioON_Button.gameObject.SetActive(true);
-            audioController.ToggleMute(false);
+            isMenu = true;
+            if (Info_Button) Info_Button.gameObject.SetActive(true);
+            if (Settings_Button) Settings_Button.gameObject.SetActive(true);
+
+            DOTween.To(() => Info_BttnTransform.anchoredPosition, (val) => Info_BttnTransform.anchoredPosition = val, new Vector2(Info_BttnTransform.anchoredPosition.x - 125, Info_BttnTransform.anchoredPosition.y), 0.1f).OnUpdate(() =>
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(Info_BttnTransform);
+            });
+
+            DOTween.To(() => Settings_BttnTransform.anchoredPosition, (val) => Settings_BttnTransform.anchoredPosition = val, new Vector2(Settings_BttnTransform.anchoredPosition.x - 250, Settings_BttnTransform.anchoredPosition.y), 0.1f).OnUpdate(() =>
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(Settings_BttnTransform);
+            });
         }
-        else //turning audio off
+        else
         {
-            AudioOFF_Button.gameObject.SetActive(true);
-            AudioON_Button.gameObject.SetActive(false);
-            audioController.ToggleMute(true);
+            isMenu = false;
+            DOTween.To(() => Info_BttnTransform.anchoredPosition, (val) => Info_BttnTransform.anchoredPosition = val, new Vector2(Info_BttnTransform.anchoredPosition.x + 125, Info_BttnTransform.anchoredPosition.y), 0.1f).OnUpdate(() =>
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(Info_BttnTransform);
+            });
+
+            DOTween.To(() => Settings_BttnTransform.anchoredPosition, (val) => Settings_BttnTransform.anchoredPosition = val, new Vector2(Settings_BttnTransform.anchoredPosition.x + 250, Settings_BttnTransform.anchoredPosition.y), 0.1f).OnUpdate(() =>
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(Settings_BttnTransform);
+            });
+
+            DOVirtual.DelayedCall(0.1f, () =>
+            {
+                if (Info_Button) Info_Button.gameObject.SetActive(false);
+                if (Settings_Button) Settings_Button.gameObject.SetActive(false);
+            });
         }
+    }
+
+    private void SoundOnOFF(bool state)
+    {
+        if (state)
+        {
+            isSound = true;
+            audioController.ToggleMute(!state, "sound");
+            RectTransform soundTransform = Sound_Button.GetComponent<RectTransform>();
+            DOTween.To(() => soundTransform.anchoredPosition, (val) => soundTransform.anchoredPosition = val, new Vector2(soundTransform.anchoredPosition.x + 95, soundTransform.anchoredPosition.y), 0.1f).OnUpdate(() =>
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(Info_BttnTransform);
+            });
+        }
+        else
+        {
+            isSound = false;
+            audioController.ToggleMute(!state, "sound");
+            RectTransform soundTransform = Sound_Button.GetComponent<RectTransform>();
+            DOTween.To(() => soundTransform.anchoredPosition, (val) => soundTransform.anchoredPosition = val, new Vector2(soundTransform.anchoredPosition.x - 95, soundTransform.anchoredPosition.y), 0.1f).OnUpdate(() =>
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(Info_BttnTransform);
+            });
+        }
+    }
+
+    private void MusicONOFF(bool state)
+    {
+        if (state)
+        {
+            isMusic = true;
+            audioController.ToggleMute(!state, "music");
+            RectTransform musicTransform = Music_Button.GetComponent<RectTransform>();
+            DOTween.To(() => musicTransform.anchoredPosition, (val) => musicTransform.anchoredPosition = val, new Vector2(musicTransform.anchoredPosition.x + 95, musicTransform.anchoredPosition.y), 0.1f).OnUpdate(() =>
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(Info_BttnTransform);
+            });
+        }
+        else
+        {
+            isMusic = false;
+            audioController.ToggleMute(!state, "music");
+            RectTransform musicTransform = Music_Button.GetComponent<RectTransform>();
+            DOTween.To(() => musicTransform.anchoredPosition, (val) => musicTransform.anchoredPosition = val, new Vector2(musicTransform.anchoredPosition.x - 95, musicTransform.anchoredPosition.y), 0.1f).OnUpdate(() =>
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(Info_BttnTransform);
+            });
+        }
+    }
+
+    private void OpenSettingsPanel()
+    {
+        if (MainPopup_Object) MainPopup_Object.SetActive(true);
+        if (Settings_Object) Settings_Object.SetActive(true);
+        OpenCloseMenu(false);
     }
 
     private void OpenQuitPanel()
@@ -145,6 +267,16 @@ public class UIManager : MonoBehaviour
     {
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
         if (PaytableMenuObject) PaytableMenuObject.SetActive(true);
+        DOTween.To(() => Info_BttnTransform.anchoredPosition, (val) => Info_BttnTransform.anchoredPosition = val, new Vector2(Info_BttnTransform.anchoredPosition.x + 125, Info_BttnTransform.anchoredPosition.y), 0.1f).OnUpdate(() =>
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(Info_BttnTransform);
+        });
+
+        DOTween.To(() => Settings_BttnTransform.anchoredPosition, (val) => Settings_BttnTransform.anchoredPosition = val, new Vector2(Settings_BttnTransform.anchoredPosition.x + 250, Settings_BttnTransform.anchoredPosition.y), 0.1f).OnUpdate(() =>
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(Settings_BttnTransform);
+        });
+        OpenCloseMenu(false);
     }
 
     internal void LowBalPopup()
@@ -178,7 +310,6 @@ public class UIManager : MonoBehaviour
         DOVirtual.DelayedCall(3f, () =>
         {
             BigWin_Image.rectTransform.DOScale(Vector3.zero, .5f).OnComplete(() => ClosePopup(BigWinPopup_Object));
-            //ClosePopup(BigWinPopup_Object);
             slotManager.CheckPopups = false;
         });
     }

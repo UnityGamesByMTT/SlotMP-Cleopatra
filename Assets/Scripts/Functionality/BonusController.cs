@@ -12,13 +12,18 @@ public class BonusController : MonoBehaviour
     [SerializeField] private ImageAnimation BonusOpen_ImageAnimation;
     [SerializeField] private ImageAnimation BonusClose_ImageAnimation;
     [SerializeField] private GameObject BonusGame_Panel;
+    [SerializeField] private GameObject BonusOpeningUI;
     [SerializeField] private GameObject BonusClosingUI;
     [SerializeField] private TMP_Text FSnum_Text;
+    [SerializeField] private TMP_Text BonusOpeningText;
+    [SerializeField] private TMP_Text BonusClosingText;
+
     private Coroutine BonusRoutine;
 
     internal void StartBonus(int freespins)
     {
         if (FSnum_Text) FSnum_Text.text = freespins.ToString();
+        if (BonusOpeningText) BonusOpeningText.text = freespins.ToString() + " FREE SPINS";
         if (BonusGame_Panel) BonusGame_Panel.SetActive(true);
         if (BonusOpen_ImageAnimation) BonusOpen_ImageAnimation.StartAnimation();
         BonusRoutine = StartCoroutine(BonusGameRoutine(freespins));
@@ -26,7 +31,15 @@ public class BonusController : MonoBehaviour
 
     private IEnumerator BonusGameRoutine(int spins)
     {
-        yield return new WaitForSecondsRealtime(1.4f); //waiting for animation to finish.
+        yield return new WaitForSecondsRealtime(1f); //waiting for animation
+
+        BonusOpen_ImageAnimation.PauseAnimation();
+        BonusOpeningUI.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        BonusOpeningUI.SetActive(false);
+        BonusOpen_ImageAnimation.ResumeAnimation();
+
+        yield return new WaitForSecondsRealtime(.4f); //waiting for animation to finish.
 
         yield return new WaitForSeconds(2f);
 

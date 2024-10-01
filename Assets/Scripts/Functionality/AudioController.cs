@@ -135,27 +135,19 @@ public class AudioController : MonoBehaviour
         bg_adudio.Stop();
     }
 
-    internal void ToggleMute(bool toggle, string type="all")
+    internal void ToggleMute(bool toggle, string type)
     {
         switch (type)
         {
-            case "bg":
+            case "music":
                 bg_adudio.mute = toggle;
                 bg_audioBonus.mute = toggle;
                 break;
-            case "button":
+            case "sounds":
                 audioPlayer_button.mute=toggle;
-                audioSpin_button.mute=toggle;
-                break;
-            case "wl":
-                audioPlayer_wl.mute=toggle;
-                audioPlayer_Bonus.mute = toggle;
-                break;
-            case "all":
                 audioPlayer_wl.mute = toggle;
-                bg_adudio.mute = toggle;
-                audioPlayer_button.mute = toggle;
-                audioSpin_button.mute = toggle;
+                audioSpin_button.mute=toggle;
+                audioPlayer_Bonus.mute = toggle;
                 break;
         }
     }
