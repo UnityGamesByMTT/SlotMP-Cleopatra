@@ -8,15 +8,19 @@ using TMPro;
 public class BonusController : MonoBehaviour
 {
     [SerializeField] private SlotBehaviour slotManager;
+    [SerializeField] private SocketIOManager SocketManager;
     [SerializeField] private AudioController _audioManager;
     [SerializeField] private ImageAnimation BonusOpen_ImageAnimation;
     [SerializeField] private ImageAnimation BonusClose_ImageAnimation;
+    [SerializeField] private ImageAnimation BonusInBonus_ImageAnimation;
     [SerializeField] private GameObject BonusGame_Panel;
     [SerializeField] private GameObject BonusOpeningUI;
     [SerializeField] private GameObject BonusClosingUI;
+    [SerializeField] private GameObject BonusInBonusUI;
     [SerializeField] private TMP_Text FSnum_Text;
     [SerializeField] private TMP_Text BonusOpeningText;
     [SerializeField] private TMP_Text BonusClosingText;
+    [SerializeField] private TMP_Text BonusInBonusText;
 
     private Coroutine BonusRoutine;
 
@@ -25,13 +29,16 @@ public class BonusController : MonoBehaviour
         if (FSnum_Text) FSnum_Text.text = freespins.ToString();
         if (BonusOpeningText) BonusOpeningText.text = freespins.ToString() + " FREE SPINS";
         if (BonusGame_Panel) BonusGame_Panel.SetActive(true);
-        if (BonusOpen_ImageAnimation) BonusOpen_ImageAnimation.StartAnimation();
-        BonusRoutine = StartCoroutine(BonusGameRoutine(freespins));
+        BonusRoutine = StartCoroutine(BonusGameStartRoutine(freespins));
     }
 
-    private IEnumerator BonusGameRoutine(int spins)
+    private IEnumerator BonusGameStartRoutine(int spins)
     {
-        yield return new WaitForSecondsRealtime(1f); //waiting for animation
+        if (BonusOpen_ImageAnimation) BonusOpen_ImageAnimation.StartAnimation();
+        //yield return new WaitForSecondsRealtime(1.1f); //waiting for animation
+        yield return new WaitUntil(() => BonusOpen_ImageAnimation.rendererDelegate.sprite == BonusOpen_ImageAnimation.textureArray[16]);
+
+        Debug.Log("Here");
 
         BonusOpen_ImageAnimation.PauseAnimation();
         BonusOpeningUI.SetActive(true);
@@ -39,21 +46,40 @@ public class BonusController : MonoBehaviour
         BonusOpeningUI.SetActive(false);
         BonusOpen_ImageAnimation.ResumeAnimation();
 
-        yield return new WaitForSecondsRealtime(.4f); //waiting for animation to finish.
+        //yield return new WaitForSecondsRealtime(.4f); //waiting for animation to finish.
+        yield return new WaitUntil(() => BonusOpen_ImageAnimation.rendererDelegate.sprite == BonusOpen_ImageAnimation.textureArray[BonusOpen_ImageAnimation.textureArray.Count-1]);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
         slotManager.FreeSpin(spins);
+    }
 
-        //make all the lines below a function to end the bonus game
+    internal IEnumerator BonusInBonus()
+    {
+        BonusInBonus_ImageAnimation.StartAnimation();
 
-        yield return new WaitUntil(() => !slotManager.IsFreeSpin);
+        yield return new WaitUntil(() => BonusInBonus_ImageAnimation.rendererDelegate.sprite == BonusInBonus_ImageAnimation.textureArray[5]);
 
-        //yield return new WaitForSeconds(2f);
+        BonusInBonus_ImageAnimation.PauseAnimation();
+        BonusInBonusText.text = SocketManager.resultData.freeSpins.count.ToString() + " FREE SPINS";
+        BonusInBonusUI.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        BonusInBonusUI.SetActive(false);
+        BonusInBonus_ImageAnimation.ResumeAnimation();
 
+        yield return new WaitUntil(() => BonusInBonus_ImageAnimation.rendererDelegate.sprite == BonusInBonus_ImageAnimation.textureArray[BonusInBonus_ImageAnimation.textureArray.Count-1]);
+
+        yield return new WaitForSeconds(1f);
+
+        slotManager.FreeSpin(SocketManager.resultData.freeSpins.count);
+    }
+
+    internal IEnumerator BonusGameEndRoutine()
+    {
         BonusClose_ImageAnimation.StartAnimation();
 
-        yield return new WaitForSecondsRealtime(.45f); //waiting for animation to finish.
+        //yield return new WaitForSecondsRealtime(.45f); //waiting for animation to finish.
+        yield return new WaitUntil(() => BonusClose_ImageAnimation.rendererDelegate.sprite == BonusClose_ImageAnimation.textureArray[6]);
 
         BonusClose_ImageAnimation.PauseAnimation();
         BonusClosingUI.SetActive(true);
@@ -62,19 +88,9 @@ public class BonusController : MonoBehaviour
         BonusClosingUI.SetActive(false);
         BonusClose_ImageAnimation.ResumeAnimation();
 
-        yield return new WaitForSecondsRealtime(1.3f);
+        yield return new WaitUntil(()=> BonusClose_ImageAnimation.rendererDelegate.sprite == BonusClose_ImageAnimation.textureArray[BonusClose_ImageAnimation.textureArray.Count-1]);
 
-        EndBonus();
-    }
-
-    private void EndBonus()
-    {
         if (BonusGame_Panel) BonusGame_Panel.SetActive(false);
 
-        if (BonusRoutine != null)
-        {
-            StopCoroutine(BonusRoutine);
-            BonusRoutine = null;
-        }
     }
 }

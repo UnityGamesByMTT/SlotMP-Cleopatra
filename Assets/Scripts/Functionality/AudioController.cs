@@ -143,10 +143,10 @@ public class AudioController : MonoBehaviour
                 bg_adudio.mute = toggle;
                 bg_audioBonus.mute = toggle;
                 break;
-            case "sounds":
-                audioPlayer_button.mute=toggle;
+            case "sound":
+                audioPlayer_button.mute = toggle;
                 audioPlayer_wl.mute = toggle;
-                audioSpin_button.mute=toggle;
+                audioSpin_button.mute = toggle;
                 audioPlayer_Bonus.mute = toggle;
                 break;
         }

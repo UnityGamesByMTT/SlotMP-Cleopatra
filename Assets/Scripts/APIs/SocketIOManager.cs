@@ -282,6 +282,7 @@ public class SocketIOManager : MonoBehaviour
                     initUIData = myData.message.UIData;
                     playerdata = myData.message.PlayerData;
                     bonusdata = myData.message.BonusData;
+                    LineData = myData.message.GameData.Lines;
                     if (!SetInit)
                     {
                         //Debug.Log(jsonObject);
