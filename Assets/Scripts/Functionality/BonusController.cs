@@ -21,6 +21,7 @@ public class BonusController : MonoBehaviour
     [SerializeField] private TMP_Text BonusOpeningText;
     [SerializeField] private TMP_Text BonusClosingText;
     [SerializeField] private TMP_Text BonusInBonusText;
+    [SerializeField] private TMP_Text BonusWinningsText;
 
     private Coroutine BonusRoutine;
 
@@ -38,8 +39,6 @@ public class BonusController : MonoBehaviour
         //yield return new WaitForSecondsRealtime(1.1f); //waiting for animation
         yield return new WaitUntil(() => BonusOpen_ImageAnimation.rendererDelegate.sprite == BonusOpen_ImageAnimation.textureArray[16]);
 
-        Debug.Log("Here");
-
         BonusOpen_ImageAnimation.PauseAnimation();
         BonusOpeningUI.SetActive(true);
         yield return new WaitForSeconds(2f);
@@ -48,6 +47,7 @@ public class BonusController : MonoBehaviour
 
         //yield return new WaitForSecondsRealtime(.4f); //waiting for animation to finish.
         yield return new WaitUntil(() => BonusOpen_ImageAnimation.rendererDelegate.sprite == BonusOpen_ImageAnimation.textureArray[BonusOpen_ImageAnimation.textureArray.Count-1]);
+        BonusOpen_ImageAnimation.StopAnimation();
 
         yield return new WaitForSeconds(1f);
 
@@ -61,13 +61,22 @@ public class BonusController : MonoBehaviour
         yield return new WaitUntil(() => BonusInBonus_ImageAnimation.rendererDelegate.sprite == BonusInBonus_ImageAnimation.textureArray[5]);
 
         BonusInBonus_ImageAnimation.PauseAnimation();
-        BonusInBonusText.text = SocketManager.resultData.freeSpins.count.ToString() + " FREE SPINS";
+
+        int currFS = 0;
+        int.TryParse(FSnum_Text.text, out currFS);
+        Debug.Log("Current Spins: " + currFS.ToString());
+        FSnum_Text.text = SocketManager.resultData.freeSpins.count.ToString();
+        Debug.Log("Total Spins now: " + FSnum_Text.text);
+        print("Free Spins Added: " + (SocketManager.resultData.freeSpins.count - currFS).ToString());
+        BonusInBonusText.text = (SocketManager.resultData.freeSpins.count-currFS).ToString() + " FREE SPINS";
+
         BonusInBonusUI.SetActive(true);
         yield return new WaitForSeconds(2f);
         BonusInBonusUI.SetActive(false);
         BonusInBonus_ImageAnimation.ResumeAnimation();
 
         yield return new WaitUntil(() => BonusInBonus_ImageAnimation.rendererDelegate.sprite == BonusInBonus_ImageAnimation.textureArray[BonusInBonus_ImageAnimation.textureArray.Count-1]);
+        BonusInBonus_ImageAnimation.StopAnimation();
 
         yield return new WaitForSeconds(1f);
 
@@ -76,21 +85,25 @@ public class BonusController : MonoBehaviour
 
     internal IEnumerator BonusGameEndRoutine()
     {
+        if (BonusClosingText) BonusClosingText.text = BonusWinningsText.text;
         BonusClose_ImageAnimation.StartAnimation();
 
-        //yield return new WaitForSecondsRealtime(.45f); //waiting for animation to finish.
-        yield return new WaitUntil(() => BonusClose_ImageAnimation.rendererDelegate.sprite == BonusClose_ImageAnimation.textureArray[6]);
+        double.TryParse(BonusClosingText.text, out double totalWin);
+        if (totalWin > 0)
+        {
+            yield return new WaitUntil(() => BonusClose_ImageAnimation.rendererDelegate.sprite == BonusClose_ImageAnimation.textureArray[6]);
 
-        BonusClose_ImageAnimation.PauseAnimation();
-        BonusClosingUI.SetActive(true);
-
-        yield return new WaitForSeconds(3f);
-        BonusClosingUI.SetActive(false);
-        BonusClose_ImageAnimation.ResumeAnimation();
+            BonusClose_ImageAnimation.PauseAnimation();
+            BonusClosingUI.SetActive(true);
+            yield return new WaitForSeconds(3f);
+            BonusClosingUI.SetActive(false);
+            BonusClose_ImageAnimation.ResumeAnimation();
+        }
 
         yield return new WaitUntil(()=> BonusClose_ImageAnimation.rendererDelegate.sprite == BonusClose_ImageAnimation.textureArray[BonusClose_ImageAnimation.textureArray.Count-1]);
+        BonusClose_ImageAnimation.StopAnimation();
 
         if (BonusGame_Panel) BonusGame_Panel.SetActive(false);
-
+        BonusWinningsText.text = "0";
     }
 }

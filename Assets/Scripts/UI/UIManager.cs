@@ -61,6 +61,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject PaytableMenuObject;
     [SerializeField] private Button Paytable_Button;
     [SerializeField] private Button PaytableClose_Button;
+    [SerializeField] private Button PaytableLeft_Button;
+    [SerializeField] private Button PaytableRight_Button;
+    [SerializeField] private TMP_Text FreeSpin_Text;
+    [SerializeField] private TMP_Text Jackpot_Text;
+    [SerializeField] private TMP_Text Wild_Text;
+    [SerializeField] private List<GameObject> GameRulesPages = new();
+    private int PageIndex;
 
     [Header("Game Quit Objects")]
     [SerializeField] private Button Quit_Button;
@@ -74,6 +81,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button Settings_Button;
     [SerializeField] private RectTransform Info_BttnTransform;
     [SerializeField] private RectTransform Settings_BttnTransform;
+
+    [Header("Paytable Slot Text")]
+    [SerializeField] private List<TMP_Text> SymbolsText = new();
 
 
     [SerializeField]
@@ -160,6 +170,53 @@ public class UIManager : MonoBehaviour
 
         if (SettingsQuit_Button) SettingsQuit_Button.onClick.RemoveAllListeners();
         if (SettingsQuit_Button) SettingsQuit_Button.onClick.AddListener(delegate { ClosePopup(Settings_Object); });
+
+        if (PaytableLeft_Button) PaytableLeft_Button.onClick.RemoveAllListeners();
+        if (PaytableLeft_Button) PaytableLeft_Button.onClick.AddListener(()=> ChangePage(false));
+
+        if (PaytableRight_Button) PaytableRight_Button.onClick.RemoveAllListeners();
+        if (PaytableRight_Button) PaytableRight_Button.onClick.AddListener(()=> ChangePage(true));
+    }
+
+    private void ChangePage(bool IncDec)
+    {
+        if (audioController) audioController.PlayButtonAudio();
+
+        if (IncDec)
+        {
+            if(PageIndex < GameRulesPages.Count - 1)
+            {
+                PageIndex++;
+            }
+            if(PageIndex == GameRulesPages.Count - 1)
+            {
+                if (PaytableRight_Button) PaytableRight_Button.interactable = false;
+            }
+            if(PageIndex > 0)
+            {
+                if(PaytableLeft_Button) PaytableLeft_Button.interactable = true;
+            }
+        }
+        else
+        {
+            if(PageIndex > 0)
+            {
+                PageIndex--;
+            }
+            if(PageIndex == 0)
+            {
+                if (PaytableLeft_Button) PaytableLeft_Button.interactable = false;
+            }
+            if(PageIndex < GameRulesPages.Count - 1)
+            {
+                if (PaytableRight_Button) PaytableRight_Button.interactable = true;
+            }
+        }
+        foreach(GameObject g in GameRulesPages)
+        {
+            g.SetActive(false);
+        }
+        if (GameRulesPages[PageIndex]) GameRulesPages[PageIndex].SetActive(true);
     }
 
     private void OpenCloseMenu(bool toggle)
@@ -266,6 +323,16 @@ public class UIManager : MonoBehaviour
     private void OpenPaytablePanel()
     {
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
+
+        PageIndex = 0;
+        foreach(GameObject g in GameRulesPages)
+        {
+            g.SetActive(false);
+        }
+        GameRulesPages[0].SetActive(true);
+        if(PaytableLeft_Button) PaytableLeft_Button.interactable = false;
+        if(PaytableRight_Button) PaytableRight_Button.interactable = true;
+
         if (PaytableMenuObject) PaytableMenuObject.SetActive(true);
         DOTween.To(() => Info_BttnTransform.anchoredPosition, (val) => Info_BttnTransform.anchoredPosition = val, new Vector2(Info_BttnTransform.anchoredPosition.x + 125, Info_BttnTransform.anchoredPosition.y), 0.1f).OnUpdate(() =>
         {
@@ -331,53 +398,45 @@ public class UIManager : MonoBehaviour
         if (Privacy_Button) Privacy_Button.onClick.AddListener(delegate { UrlButtons(PrivacyUrl); });
 
         StartCoroutine(DownloadImage(AbtImgUrl));
-        //PopulateSymbolsPayout(symbolsText);
+        PopulateSymbolsPayout(symbolsText);
     }
 
-    //private void PopulateSymbolsPayout(Paylines paylines)
-    //{
-    //    for (int i = 0; i < SymbolsText.Length; i++)
-    //    {
-    //        string text = null;
-    //        if (paylines.symbols[i].Multiplier[0][0] != 0)
-    //        {
-    //            text += "5x - " + paylines.symbols[i].Multiplier[0][0];
-    //        }
-    //        if (paylines.symbols[i].Multiplier[1][0] != 0)
-    //        {
-    //            text += "\n4x - " + paylines.symbols[i].Multiplier[1][0];
-    //        }
-    //        if (paylines.symbols[i].Multiplier[2][0] != 0)
-    //        {
-    //            text += "\n3x - " + paylines.symbols[i].Multiplier[2][0];
-    //        }
-    //        if (SymbolsText[i]) SymbolsText[i].text = text;
-    //    }
+    private void PopulateSymbolsPayout(Paylines paylines)
+    {
+        for (int i = 0; i < SymbolsText.Count; i++)
+        {
+            string text = null;
+            if (paylines.symbols[i].Multiplier[0][0] != 0)
+            {
+                text += "5x - " + paylines.symbols[i].Multiplier[0][0];
+            }
+            if (paylines.symbols[i].Multiplier[1][0] != 0)
+            {
+                text += "\n4x - " + paylines.symbols[i].Multiplier[1][0];
+            }
+            if (paylines.symbols[i].Multiplier[2][0] != 0)
+            {
+                text += "\n3x - " + paylines.symbols[i].Multiplier[2][0];
+            }
+            if (SymbolsText[i]) SymbolsText[i].text = text;
+        }
 
-    //    for (int i = 0; i < paylines.symbols.Count; i++)
-    //    {
-    //        if (paylines.symbols[i].Name.ToUpper() == "FREESPIN")
-    //        {
-    //            if (FreeSpin_Text) FreeSpin_Text.text = paylines.symbols[i].description.ToString();
-    //        }
-    //        if (paylines.symbols[i].Name.ToUpper() == "SCATTER")
-    //        {
-    //            if (Scatter_Text) Scatter_Text.text = paylines.symbols[i].description.ToString();
-    //        }
-    //        if (paylines.symbols[i].Name.ToUpper() == "JACKPOT")
-    //        {
-    //            if (Jackpot_Text) Jackpot_Text.text = paylines.symbols[i].description.ToString();
-    //        }
-    //        if (paylines.symbols[i].Name.ToUpper() == "BONUS")
-    //        {
-    //            if (Bonus_Text) Bonus_Text.text = paylines.symbols[i].description.ToString();
-    //        }
-    //        if (paylines.symbols[i].Name.ToUpper() == "WILD")
-    //        {
-    //            if (Wild_Text) Wild_Text.text = paylines.symbols[i].description.ToString();
-    //        }
-    //    }
-    //}
+        for (int i = 0; i < paylines.symbols.Count; i++)
+        {
+            if (paylines.symbols[i].Name.ToUpper() == "FREESPIN")
+            {
+                if (FreeSpin_Text) FreeSpin_Text.text = paylines.symbols[i].description.ToString();
+            }            
+            if (paylines.symbols[i].Name.ToUpper() == "JACKPOT")
+            {
+                if (Jackpot_Text) Jackpot_Text.text = paylines.symbols[i].description.ToString();
+            }
+            if (paylines.symbols[i].Name.ToUpper() == "WILD")
+            {
+                if (Wild_Text) Wild_Text.text = paylines.symbols[i].description.ToString();
+            }
+        }
+    }
 
     private void CallOnExitFunction()
     {

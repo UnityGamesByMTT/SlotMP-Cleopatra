@@ -58,6 +58,7 @@ public class SlotBehaviour : MonoBehaviour
     private TMP_Text TotalWin_text;
     [SerializeField]
     private TMP_Text BigWin_Text;
+    [SerializeField] private TMP_Text BonusWin_Text;
 
 
     [Header("Audio Management")]
@@ -102,6 +103,7 @@ public class SlotBehaviour : MonoBehaviour
 
     private bool IsAutoSpin = false;
     private bool IsFreeSpin = false;
+    private bool WinAnimationFin = true;
 
     private bool IsSpinning = false;
     private bool CheckSpinAudio = false;
@@ -114,6 +116,7 @@ public class SlotBehaviour : MonoBehaviour
     [SerializeField]
     private int IconSizeFactor = 100;       //set this parameter according to the size of the icon and spacing
     private int numberOfSlots = 5;          //number of columns
+
 
     private void Start()
     {
@@ -182,10 +185,13 @@ public class SlotBehaviour : MonoBehaviour
     {
         while (IsAutoSpin)
         {
+            if(BoxAnimRoutine!=null && !WinAnimationFin)
+            {
+                yield return new WaitUntil(() => WinAnimationFin);
+            }
+
             StartSlots(IsAutoSpin);
             yield return tweenroutine;
-
-            yield return new WaitForSeconds(2f); //added for testing
         }
     }
 
@@ -234,7 +240,7 @@ public class SlotBehaviour : MonoBehaviour
             StartSlots(false, true);
 
             yield return tweenroutine;
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1f);
             i++;
         }
         ToggleButtonGrp(true);
@@ -385,10 +391,9 @@ public class SlotBehaviour : MonoBehaviour
         }
         //WinningsAnim(false);
         if (SlotStart_Button) SlotStart_Button.interactable = false;
-        if (TempList.Count > 0)
-        {
-            StopGameAnimation();
-        }
+
+        StopGameAnimation();
+        
         //PayCalculator.ResetLines();
         tweenroutine = StartCoroutine(TweenRoutine(bonus));
 
@@ -417,7 +422,7 @@ public class SlotBehaviour : MonoBehaviour
             if(bonus && i%2 != 0)
             {
                 InitializeTweening(Slot_Transform[i], bonus);
-                Debug.Log(Slot_Transform[i].name);
+                //Debug.Log(Slot_Transform[i].name);
                 //yield return new WaitForSeconds(0.1f);
             }
             else
@@ -459,7 +464,7 @@ public class SlotBehaviour : MonoBehaviour
 
         KillAllTweens();
 
-        if (SocketManager.playerdata.currentWining>0) WinningsTextAnimation();
+        if (SocketManager.playerdata.currentWining>0) WinningsTextAnimation(bonus);
 
         if (SocketManager.resultData.jackpot > 0)
         {
@@ -471,18 +476,44 @@ public class SlotBehaviour : MonoBehaviour
 
         if (SocketManager.resultData.freeSpins.isNewAdded  && !IsFreeSpin)
         {
+            Debug.Log("First Time Bonus");
+            if (BoxAnimRoutine != null && !WinAnimationFin)
+            {
+                yield return new WaitUntil(() => WinAnimationFin);
+                StopGameAnimation();
+            }
+
             yield return new WaitForSeconds(2f);
-            _bonusManager.StartBonus(SocketManager.resultData.freeSpins.count); 
-            ToggleButtonGrp(true);
-            IsSpinning = false;
+
+            _bonusManager.StartBonus(SocketManager.resultData.freeSpins.count);
             StopGameAnimation();
+            ToggleButtonGrp(false);
+            IsSpinning = false;
+
             yield break;
         }
-        else if (SocketManager.resultData.freeSpins.isNewAdded)
+        else if (SocketManager.resultData.freeSpins.isNewAdded && IsFreeSpin)
         {
+            Debug.Log("Bonus In Bonus");
             IsFreeSpin = false;
+
+            if (BoxAnimRoutine != null && !WinAnimationFin)
+            {
+                yield return new WaitUntil(() => WinAnimationFin);
+                StopGameAnimation();
+            }
+
             yield return new WaitForSeconds(2f);
             StartCoroutine(_bonusManager.BonusInBonus());
+            StopGameAnimation();
+
+            if (FreeSpinRoutine != null)
+            {
+                StopCoroutine(FreeSpinRoutine);
+                FreeSpinRoutine = null;
+            }
+
+            yield break;
         }
 
         yield return new WaitUntil(() => !CheckPopups);
@@ -500,14 +531,30 @@ public class SlotBehaviour : MonoBehaviour
     }
     #endregion
 
-    private void WinningsTextAnimation()
+    private void WinningsTextAnimation(bool bonus = false)
     {
         double winAmt = 0;
         double currentWin = 0;
 
         double currentBal = 0;
         double Balance = 0;
+
+        double BonusWinAmt = 0;
+        double currentBonusWinnings = 0;
         TotalWin_text.gameObject.SetActive(true);
+
+        if (bonus)
+        {
+            try
+            {
+                BonusWinAmt = double.Parse(SocketManager.playerdata.currentWining.ToString("f2"));
+                currentBonusWinnings = double.Parse(BonusWin_Text.text);
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Error while conversion " + e.Message);
+            }
+        }
         try
         {
             winAmt = double.Parse(SocketManager.playerdata.currentWining.ToString("f2"));
@@ -543,17 +590,28 @@ public class SlotBehaviour : MonoBehaviour
         {
             Debug.Log("Error while conversion " + e.Message);
         }
-        
-        DOTween.To(() => currentWin, (val) => currentWin = val, winAmt, 0.8f).OnUpdate(() =>
-        {
-            if (TotalWin_text) TotalWin_text.text = currentWin.ToString("f2");
-            if(BigWin_Text) BigWin_Text.text = currentWin.ToString("f2");
-        });
 
-        DOTween.To(() => currentBal, (val) => currentBal = val, Balance, 0.8f).OnUpdate(() =>
+        if (bonus)
         {
-            if (Balance_text) Balance_text.text = currentBal.ToString("f2");
-        });
+            double CurrTotal = BonusWinAmt + currentBonusWinnings;
+            DOTween.To(() => currentBonusWinnings, (val) => currentBonusWinnings = val, CurrTotal, 0.8f).OnUpdate(() =>
+            {
+                if (BonusWin_Text) BonusWin_Text.text = currentBonusWinnings.ToString("f2");
+            });
+        }
+        else
+        {
+            DOTween.To(() => currentWin, (val) => currentWin = val, winAmt, 0.8f).OnUpdate(() =>
+            {
+                if (TotalWin_text) TotalWin_text.text = currentWin.ToString("f2");
+                if (BigWin_Text) BigWin_Text.text = currentWin.ToString("f2");
+            });
+
+            DOTween.To(() => currentBal, (val) => currentBal = val, Balance, 0.8f).OnUpdate(() =>
+            {
+                if (Balance_text) Balance_text.text = currentBal.ToString("f2");
+            });
+        }
     }
 
     private void BalanceDeduction()
@@ -649,6 +707,7 @@ public class SlotBehaviour : MonoBehaviour
 
     private IEnumerator BoxRoutine(List<int> LineIDs)
     {
+        WinAnimationFin = false;
         while (true)
         {
             for (int i = 0; i < LineIDs.Count; i++)
@@ -687,6 +746,7 @@ public class SlotBehaviour : MonoBehaviour
             PayCalculator.DontDestroyLines.Clear();
             PayCalculator.DontDestroyLines.TrimExcess();
             PayCalculator.ResetStaticLine();
+            WinAnimationFin = true;
         }
     }
 
@@ -753,25 +813,32 @@ public class SlotBehaviour : MonoBehaviour
         {
             StopCoroutine(BoxAnimRoutine);
             BoxAnimRoutine = null;
+            if (!WinAnimationFin) WinAnimationFin = true;
         }
 
-        for (int i = 0; i < TempBoxScripts.Count; i++)
+        if (TempBoxScripts.Count > 0)
         {
-            foreach (BoxScripting b in TempBoxScripts[i].boxScripts)
+            for (int i = 0; i < TempBoxScripts.Count; i++)
             {
-                b.isAnim = false;
-                b.ResetBG();
+                foreach (BoxScripting b in TempBoxScripts[i].boxScripts)
+                {
+                    b.isAnim = false;
+                    b.ResetBG();
+                }
             }
         }
-
+        
         if (SkipWinAnimation_Button) SkipWinAnimation_Button.gameObject.SetActive(false);
 
-        for (int i = 0; i < TempList.Count; i++)
+        if (TempList.Count > 0)
         {
-            TempList[i].StopAnimation();
+            for (int i = 0; i < TempList.Count; i++)
+            {
+                TempList[i].StopAnimation();
+            }
+            TempList.Clear();
+            TempList.TrimExcess();
         }
-        TempList.Clear();
-        TempList.TrimExcess();
 
         PayCalculator.DontDestroyLines.Clear();
         PayCalculator.DontDestroyLines.TrimExcess();
