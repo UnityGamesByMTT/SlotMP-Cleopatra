@@ -19,13 +19,17 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject MainPopup_Object;
 
-    [Header("Big Win Popup")]
+    [Header("Win Popup")]
     [SerializeField]
-    private Image BigWin_Image;
+    private Image Win_Image;
     [SerializeField]
-    private GameObject BigWinPopup_Object;
+    private GameObject WinPopup_Object;
     [SerializeField]
-    private TMP_Text BigWin_Text;
+    private TMP_Text Win_Text;
+    [SerializeField] private RectTransform WinBgAnimation;
+    [SerializeField] private Sprite BigWin_Sprite, HugeWin_Sprite, MegaWin_Sprite, Jackpot_Sprite;
+    [SerializeField] private ImageAnimation JackpotImageAnimation;
+    private Tween ImageRotationTween;
 
     [Header("Disconnection Popup")]
     [SerializeField]
@@ -366,17 +370,59 @@ public class UIManager : MonoBehaviour
             OpenPopup(DisconnectPopup_Object);
         }
     }
-        
-    internal void StartBigWinPopupAnim()
+
+    
+
+    internal void PopulateWin(int value)
     {
-        if (BigWinPopup_Object) BigWinPopup_Object.SetActive(true);
+        switch (value)
+        {
+            case 1:
+                if (Win_Image) Win_Image.sprite = BigWin_Sprite;
+                break;
+            case 2:
+                if (Win_Image) Win_Image.sprite = HugeWin_Sprite;
+                break;
+            case 3:
+                if (Win_Image) Win_Image.sprite = MegaWin_Sprite;
+                break;
+            case 4:
+                if (Win_Image) Win_Image.sprite = Jackpot_Sprite;
+                JackpotImageAnimation.StartAnimation();
+                break;
+        }
+
+        StartPopupAnim();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            PopulateWin(4);
+            Debug.Log("Called");
+        }
+    }
+
+    private void StartPopupAnim()
+    {
+        if (WinPopup_Object) WinPopup_Object.SetActive(true);
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
 
-        BigWin_Image.rectTransform.DOScale(new Vector3(1, 1, 1), .5f);
+        Win_Image.rectTransform.DOScale(new Vector3(1, 1, 1), .5f).SetEase(Ease.OutCirc);
+
+        ImageRotationTween = WinBgAnimation.DORotate(new Vector3(0, 0, 360), 2f, RotateMode.FastBeyond360)
+            .SetEase(Ease.Linear) // Make the rotation constant
+            .SetLoops(-1, LoopType.Incremental); // Rotate infinitely in an incremental way
+
+        WinBgAnimation.DOScale(Vector3.one, .6f).SetEase(Ease.OutCirc);
 
         DOVirtual.DelayedCall(3f, () =>
         {
-            BigWin_Image.rectTransform.DOScale(Vector3.zero, .5f).OnComplete(() => ClosePopup(BigWinPopup_Object));
+            Win_Image.rectTransform.DOScale(Vector3.zero, .5f).SetEase(Ease.InBack).OnComplete(() => ClosePopup(WinPopup_Object));
+
+            WinBgAnimation.DOScale(Vector3.zero, .5f).SetEase(Ease.InBack).OnComplete(()=> ImageRotationTween.Kill());
+
             slotManager.CheckPopups = false;
         });
     }

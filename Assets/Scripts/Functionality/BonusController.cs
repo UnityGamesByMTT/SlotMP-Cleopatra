@@ -28,6 +28,7 @@ public class BonusController : MonoBehaviour
     internal void StartBonus(int freespins)
     {
         if (FSnum_Text) FSnum_Text.text = freespins.ToString();
+        if (BonusWinningsText) BonusWinningsText.text = "0.00";
         if (BonusOpeningText) BonusOpeningText.text = freespins.ToString() + " FREE SPINS";
         if (BonusGame_Panel) BonusGame_Panel.SetActive(true);
         BonusRoutine = StartCoroutine(BonusGameStartRoutine(freespins));
