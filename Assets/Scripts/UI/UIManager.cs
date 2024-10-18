@@ -3,57 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
-using System.Linq;
 using TMPro;
-using System;
 using UnityEngine.Networking;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField]
-    private Button Terms_Button;
-    [SerializeField]
-    private Button Privacy_Button;
-
     [Header("Popus UI")]
-    [SerializeField]
-    private GameObject MainPopup_Object;
+    [SerializeField] private GameObject MainPopup_Object;
 
     [Header("Win Popup")]
-    [SerializeField]
-    private Image Win_Image;
-    [SerializeField]
-    private GameObject WinPopup_Object;
-    [SerializeField]
-    private TMP_Text Win_Text;
+    [SerializeField] private Image Win_Image;
+    [SerializeField] private GameObject WinPopup_Object;
+    [SerializeField] private TMP_Text Win_Text;
     [SerializeField] private RectTransform WinBgAnimation;
     [SerializeField] private Sprite BigWin_Sprite, HugeWin_Sprite, MegaWin_Sprite, Jackpot_Sprite;
     [SerializeField] private ImageAnimation JackpotImageAnimation;
     private Tween ImageRotationTween;
 
     [Header("Disconnection Popup")]
-    [SerializeField]
-    private Button CloseDisconnect_Button;
-    [SerializeField]
-    private GameObject DisconnectPopup_Object;
+    [SerializeField] private Button CloseDisconnect_Button;
+    [SerializeField] private GameObject DisconnectPopup_Object;
 
     [Header("AnotherDevice Popup")]
-    [SerializeField]
-    private Button CloseAD_Button;
-    [SerializeField]
-    private GameObject ADPopup_Object;
-
-    [Header("Reconnection Popup")] //ask if this will be used
-    [SerializeField]
-    private TMP_Text reconnect_Text;
-    [SerializeField]
-    private GameObject ReconnectPopup_Object;
+    [SerializeField] private GameObject ADPopup_Object;
 
     [Header("LowBalance Popup")]
-    [SerializeField]
-    private Button LBExit_Button;
-    [SerializeField]
-    private GameObject LBPopup_Object;
+    [SerializeField] private Button LBExit_Button;
+    [SerializeField] private GameObject LBPopup_Object;
 
     [Header("Audio Objects")]
     [SerializeField] private GameObject Settings_Object;
@@ -89,32 +65,26 @@ public class UIManager : MonoBehaviour
     [Header("Paytable Slot Text")]
     [SerializeField] private List<TMP_Text> SymbolsText = new();
 
-
-    [SerializeField]
-    private AudioController audioController;
+    [SerializeField] private AudioController audioController;
 
     [SerializeField] private SlotBehaviour slotManager;
 
-    [SerializeField]
-    private SocketIOManager socketManager;
+    [SerializeField] private SocketIOManager socketManager;
 
     private bool isMusic = true;
     private bool isSound = true;
     private bool isExit = false;
     private bool isMenu = false;
 
-    private int FreeSpins;
 
     private void Start()
     {
+
         if (LBExit_Button) LBExit_Button.onClick.RemoveAllListeners();
         if (LBExit_Button) LBExit_Button.onClick.AddListener(delegate { ClosePopup(LBPopup_Object); });
 
         if (CloseDisconnect_Button) CloseDisconnect_Button.onClick.RemoveAllListeners();
         if (CloseDisconnect_Button) CloseDisconnect_Button.onClick.AddListener(CallOnExitFunction);
-
-        if (CloseAD_Button) CloseAD_Button.onClick.RemoveAllListeners();
-        if (CloseAD_Button) CloseAD_Button.onClick.AddListener(CallOnExitFunction);
 
         if (Sound_Button) Sound_Button.onClick.RemoveAllListeners();
         if (Sound_Button) Sound_Button.onClick.AddListener(delegate
@@ -158,7 +128,8 @@ public class UIManager : MonoBehaviour
         if (PaytableClose_Button) PaytableClose_Button.onClick.AddListener(delegate { ClosePopup(PaytableMenuObject); });
 
         if (Menu_Button) Menu_Button.onClick.RemoveAllListeners();
-        if (Menu_Button) Menu_Button.onClick.AddListener(delegate {
+        if (Menu_Button) Menu_Button.onClick.AddListener(delegate
+        {
             if (!isMenu)
             {
                 OpenCloseMenu(true);
@@ -225,7 +196,7 @@ public class UIManager : MonoBehaviour
 
     private void OpenCloseMenu(bool toggle)
     {
-        audioController.PlayButtonAudio();
+        if(audioController) audioController.PlayButtonAudio();
         if (toggle)
         {
             isMenu = true;
@@ -313,6 +284,8 @@ public class UIManager : MonoBehaviour
 
     private void OpenSettingsPanel()
     {
+        if (audioController) audioController.PlayButtonAudio();
+
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
         if (Settings_Object) Settings_Object.SetActive(true);
         OpenCloseMenu(false);
@@ -320,33 +293,32 @@ public class UIManager : MonoBehaviour
 
     private void OpenQuitPanel()
     {
+        if (audioController) audioController.PlayButtonAudio();
+
+
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
         if (QuitMenuObject) QuitMenuObject.SetActive(true);
     }
 
     private void OpenPaytablePanel()
     {
+        if (audioController) audioController.PlayButtonAudio();
+
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
 
         PageIndex = 0;
+
         foreach(GameObject g in GameRulesPages)
         {
             g.SetActive(false);
         }
+
         GameRulesPages[0].SetActive(true);
         if(PaytableLeft_Button) PaytableLeft_Button.interactable = false;
         if(PaytableRight_Button) PaytableRight_Button.interactable = true;
 
         if (PaytableMenuObject) PaytableMenuObject.SetActive(true);
-        DOTween.To(() => Info_BttnTransform.anchoredPosition, (val) => Info_BttnTransform.anchoredPosition = val, new Vector2(Info_BttnTransform.anchoredPosition.x + 125, Info_BttnTransform.anchoredPosition.y), 0.1f).OnUpdate(() =>
-        {
-            LayoutRebuilder.ForceRebuildLayoutImmediate(Info_BttnTransform);
-        });
 
-        DOTween.To(() => Settings_BttnTransform.anchoredPosition, (val) => Settings_BttnTransform.anchoredPosition = val, new Vector2(Settings_BttnTransform.anchoredPosition.x + 250, Settings_BttnTransform.anchoredPosition.y), 0.1f).OnUpdate(() =>
-        {
-            LayoutRebuilder.ForceRebuildLayoutImmediate(Settings_BttnTransform);
-        });
         OpenCloseMenu(false);
     }
 
@@ -357,21 +329,11 @@ public class UIManager : MonoBehaviour
 
     internal void DisconnectionPopup(bool isReconnection)
     {
-        //if(isReconnection)
-        //{
-        //    OpenPopup(ReconnectPopup_Object);
-        //}
-        //else
-        //{
-        //    ClosePopup(ReconnectPopup_Object);
-        //}
         if (!isExit)
         {
             OpenPopup(DisconnectPopup_Object);
         }
     }
-
-    
 
     internal void PopulateWin(int value)
     {
@@ -395,19 +357,21 @@ public class UIManager : MonoBehaviour
         StartPopupAnim();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            PopulateWin(4);
-            Debug.Log("Called");
-        }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Space))
+    //    {
+    //        PopulateWin(4);
+    //        Debug.Log("Called");
+    //    }
+    //}
 
     private void StartPopupAnim()
     {
         if (WinPopup_Object) WinPopup_Object.SetActive(true);
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
+
+        audioController.PlayWLAudio("bigwin");
 
         Win_Image.rectTransform.DOScale(new Vector3(1, 1, 1), .5f).SetEase(Ease.OutCirc);
 
@@ -434,15 +398,6 @@ public class UIManager : MonoBehaviour
 
     internal void InitialiseUIData(string SupportUrl, string AbtImgUrl, string TermsUrl, string PrivacyUrl, Paylines symbolsText)
     {
-        //if (Support_Button) Support_Button.onClick.RemoveAllListeners();
-        //if (Support_Button) Support_Button.onClick.AddListener(delegate { UrlButtons(SupportUrl); });
-
-        if (Terms_Button) Terms_Button.onClick.RemoveAllListeners();
-        if (Terms_Button) Terms_Button.onClick.AddListener(delegate { UrlButtons(TermsUrl); });
-
-        if (Privacy_Button) Privacy_Button.onClick.RemoveAllListeners();
-        if (Privacy_Button) Privacy_Button.onClick.AddListener(delegate { UrlButtons(PrivacyUrl); });
-
         StartCoroutine(DownloadImage(AbtImgUrl));
         PopulateSymbolsPayout(symbolsText);
     }
@@ -494,6 +449,7 @@ public class UIManager : MonoBehaviour
     private void OpenPopup(GameObject Popup)
     {
         if (audioController) audioController.PlayButtonAudio();
+
         if (Popup) Popup.SetActive(true);
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
     }

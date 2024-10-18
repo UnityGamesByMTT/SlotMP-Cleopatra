@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using DG.Tweening;
 using TMPro;
 
 public class BonusController : MonoBehaviour
@@ -23,21 +20,22 @@ public class BonusController : MonoBehaviour
     [SerializeField] private TMP_Text BonusInBonusText;
     [SerializeField] private TMP_Text BonusWinningsText;
 
-    private Coroutine BonusRoutine;
-
     internal void StartBonus(int freespins)
     {
         if (FSnum_Text) FSnum_Text.text = freespins.ToString();
         if (BonusWinningsText) BonusWinningsText.text = "0.00";
         if (BonusOpeningText) BonusOpeningText.text = freespins.ToString() + " FREE SPINS";
         if (BonusGame_Panel) BonusGame_Panel.SetActive(true);
-        BonusRoutine = StartCoroutine(BonusGameStartRoutine(freespins));
+        StartCoroutine(BonusGameStartRoutine(freespins));
     }
 
     private IEnumerator BonusGameStartRoutine(int spins)
     {
+        _audioManager.SwitchBGSound(true);
         if (BonusOpen_ImageAnimation) BonusOpen_ImageAnimation.StartAnimation();
-        //yield return new WaitForSecondsRealtime(1.1f); //waiting for animation
+
+        slotManager.StopGameAnimation();
+
         yield return new WaitUntil(() => BonusOpen_ImageAnimation.rendererDelegate.sprite == BonusOpen_ImageAnimation.textureArray[16]);
 
         BonusOpen_ImageAnimation.PauseAnimation();
@@ -46,7 +44,6 @@ public class BonusController : MonoBehaviour
         BonusOpeningUI.SetActive(false);
         BonusOpen_ImageAnimation.ResumeAnimation();
 
-        //yield return new WaitForSecondsRealtime(.4f); //waiting for animation to finish.
         yield return new WaitUntil(() => BonusOpen_ImageAnimation.rendererDelegate.sprite == BonusOpen_ImageAnimation.textureArray[BonusOpen_ImageAnimation.textureArray.Count-1]);
         BonusOpen_ImageAnimation.StopAnimation();
 
@@ -100,9 +97,10 @@ public class BonusController : MonoBehaviour
             BonusClosingUI.SetActive(false);
             BonusClose_ImageAnimation.ResumeAnimation();
         }
-
+        slotManager.StopGameAnimation();
         yield return new WaitUntil(()=> BonusClose_ImageAnimation.rendererDelegate.sprite == BonusClose_ImageAnimation.textureArray[BonusClose_ImageAnimation.textureArray.Count-1]);
         BonusClose_ImageAnimation.StopAnimation();
+        _audioManager.SwitchBGSound(false);
 
         if (BonusGame_Panel) BonusGame_Panel.SetActive(false);
         BonusWinningsText.text = "0";

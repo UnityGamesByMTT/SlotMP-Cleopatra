@@ -1,18 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using System;
-using UnityEngine.SceneManagement;
-using UnityEngine.Networking;
-using DG.Tweening;
-using System.Linq;
 using Newtonsoft.Json;
 using Best.SocketIO;
 using Best.SocketIO.Events;
 using Newtonsoft.Json.Linq;
 using System.Runtime.Serialization;
-using Best.HTTP.Shared;
 
 public class SocketIOManager : MonoBehaviour
 {
@@ -26,9 +20,7 @@ public class SocketIOManager : MonoBehaviour
     internal UIData initUIData = null;
     internal GameData resultData = null;
     internal PlayerData playerdata = null;
-    [SerializeField]
-    internal List<string> bonusdata = null;
-    //WebSocket currentSocket = null;
+    [SerializeField] internal List<string> bonusdata = null;
     internal bool isResultdone = false;
     internal List<List<int>> LineData = null;
 
@@ -44,13 +36,13 @@ public class SocketIOManager : MonoBehaviour
     //protected string TestSocketURI = "https://7p68wzhv-5000.inc1.devtunnels.ms/"; //vikings
     protected string TestSocketURI = "https://916smq0d-5001.inc1.devtunnels.ms/";
     //protected string TestSocketURI = "https://jmn3wfcb-5000.inc1.devtunnels.ms/";
-    
+
 
     [SerializeField]
     private string testToken;
 
-    //protected string gameID = "SL-CLEO";
-    protected string gameID = "";
+    protected string gameID = "SL-CLEO";
+    //protected string gameID = "";
 
     internal bool isLoaded = false;
 
@@ -78,10 +70,11 @@ public class SocketIOManager : MonoBehaviour
 
         // Parse the JSON data
         var data = JsonUtility.FromJson<AuthTokenData>(jsonData);
+
+        // Proceed with connecting to the server using myAuth and socketURL
         SocketURI = data.socketURL;
         myAuth = data.cookie;
 
-        // Proceed with connecting to the server using myAuth and socketURL
     }
 
     string myAuth = null;
@@ -138,6 +131,7 @@ public class SocketIOManager : MonoBehaviour
             yield return null;
         }
         Debug.Log("My Auth is not null");
+
         // Once myAuth is set, configure the authFunction
         Func<SocketManager, Socket, object> authFunction = (manager, socket) =>
         {
@@ -185,15 +179,8 @@ public class SocketIOManager : MonoBehaviour
     private void OnDisconnected(string response)
     {
         Debug.Log("Disconnected from the server");
-        //if (maxReconnectionAttempts <= this.manager.ReconnectAttempts)
-        //{
         StopAllCoroutines();
         uiManager.DisconnectionPopup(false);
-        //}
-        //else
-        //{
-        //    uiManager.DisconnectionPopup(false);
-        //}
     }
 
     private void OnError(string response)
@@ -203,25 +190,19 @@ public class SocketIOManager : MonoBehaviour
 
     private void OnListenEvent(string data)
     {
-        //Debug.Log("Received some_event with data: " + data);
         ParseResponse(data);
     }
 
     private void OnSocketState(bool state)
     {
-        if (state)
-        {
-            Debug.Log("my state is " + state);
-        }
-        else
-        {
-
-        }
+        Debug.Log("my state is " + state);
     }
+
     private void OnSocketError(string data)
     {
         Debug.Log("Received error with data: " + data);
     }
+
     private void OnSocketAlert(string data)
     {
         Debug.Log("Received alert with data: " + data);
@@ -263,8 +244,6 @@ public class SocketIOManager : MonoBehaviour
             Debug.LogWarning("Socket is not connected.");
         }
     }
-
-
 
     internal void CloseSocket()
     {
@@ -349,6 +328,7 @@ public class SocketIOManager : MonoBehaviour
         message.data.spins = 1;
         message.data.currentLines = 20;
         message.id = "SPIN";
+
         // Serialize message data to JSON
         string json = JsonUtility.ToJson(message);
         SendDataWithNamespace("message", json);
@@ -432,7 +412,6 @@ public class BetData
 public class AuthData
 {
     public string GameID;
-    //public double TotalLines;
 }
 
 [Serializable]

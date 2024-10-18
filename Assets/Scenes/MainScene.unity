@@ -310,8 +310,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 1200443822, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
-    m_PressedSprite: {fileID: 303132876, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
+    m_HighlightedSprite: {fileID: 1073210502, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
+    m_PressedSprite: {fileID: 405482274, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -345,7 +345,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1297960800, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
+  m_Sprite: {fileID: -1349486121, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -495,7 +495,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0000
+  m_text: 0.00
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -812,7 +812,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281216558
+    rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -1206,11 +1206,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9ae1bf2ec654621a0c3eaff2a909fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAnimationState: 0
   textureArray: []
   rendererDelegate: {fileID: 65963189}
   useSharedMaterial: 1
   doLoopAnimation: 1
-  currentAnimationState: 0
   AnimationSpeed: 5
   delayBetweenLoop: 0
 --- !u!114 &65963192
@@ -1587,8 +1587,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 1878260008, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
-    m_PressedSprite: {fileID: 1147367747, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
+    m_HighlightedSprite: {fileID: 1529748814, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
+    m_PressedSprite: {fileID: -53304866, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -1622,7 +1622,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 569891061, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
+  m_Sprite: {fileID: 1227215345, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -2061,7 +2061,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -155, y: 51.55}
+  m_AnchoredPosition: {x: -155, y: 14}
   m_SizeDelta: {x: 553.14, y: 138.28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &151356602
@@ -2383,6 +2383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9ae1bf2ec654621a0c3eaff2a909fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAnimationState: 0
   textureArray:
   - {fileID: 21300000, guid: b65bacb9e4c634fa9a417c52c34835d2, type: 3}
   - {fileID: 21300000, guid: aca2cb7b8360940fe9dda6d041f8f9c0, type: 3}
@@ -2415,7 +2416,6 @@ MonoBehaviour:
   rendererDelegate: {fileID: 169476490}
   useSharedMaterial: 1
   doLoopAnimation: 0
-  currentAnimationState: 0
   AnimationSpeed: 20
   delayBetweenLoop: 0
 --- !u!1 &177841705
@@ -3266,7 +3266,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -55.999985}
+  m_AnchoredPosition: {x: 0, y: -56}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &287810576
@@ -3517,6 +3517,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9ae1bf2ec654621a0c3eaff2a909fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAnimationState: 0
   textureArray:
   - {fileID: 21300000, guid: bc4a1cdfadc534fada38c09eb41b89b1, type: 3}
   - {fileID: 21300000, guid: c758d9073fd7140d8ab746fe77dca20e, type: 3}
@@ -3545,8 +3546,7 @@ MonoBehaviour:
   rendererDelegate: {fileID: 314603293}
   useSharedMaterial: 1
   doLoopAnimation: 0
-  currentAnimationState: 0
-  AnimationSpeed: 10
+  AnimationSpeed: 14
   delayBetweenLoop: 0
 --- !u!114 &314603293
 MonoBehaviour:
@@ -4324,8 +4324,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81f2c8ee610c34558839b64290afe0ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Terms_Button: {fileID: 0}
-  Privacy_Button: {fileID: 0}
   MainPopup_Object: {fileID: 1952695970}
   Win_Image: {fileID: 674254486}
   WinPopup_Object: {fileID: 1585514364}
@@ -4338,10 +4336,7 @@ MonoBehaviour:
   JackpotImageAnimation: {fileID: 169476492}
   CloseDisconnect_Button: {fileID: 1284807844}
   DisconnectPopup_Object: {fileID: 1301951257}
-  CloseAD_Button: {fileID: 0}
   ADPopup_Object: {fileID: 1151925436}
-  reconnect_Text: {fileID: 0}
-  ReconnectPopup_Object: {fileID: 0}
   LBExit_Button: {fileID: 813518731}
   LBPopup_Object: {fileID: 426756446}
   Settings_Object: {fileID: 69541374}
@@ -4474,11 +4469,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9ae1bf2ec654621a0c3eaff2a909fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAnimationState: 0
   textureArray: []
   rendererDelegate: {fileID: 379481114}
   useSharedMaterial: 1
   doLoopAnimation: 1
-  currentAnimationState: 0
   AnimationSpeed: 5
   delayBetweenLoop: 0
 --- !u!114 &379481117
@@ -7143,7 +7138,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 165}
+  m_AnchoredPosition: {x: 0, y: 103}
   m_SizeDelta: {x: 369.25, y: 92.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &538023195
@@ -7529,7 +7524,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 9}
+  m_AnchoredPosition: {x: 0, y: -63}
   m_SizeDelta: {x: 478.26, y: 119.56}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &543412171
@@ -7870,11 +7865,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9ae1bf2ec654621a0c3eaff2a909fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAnimationState: 0
   textureArray: []
   rendererDelegate: {fileID: 560746333}
   useSharedMaterial: 1
   doLoopAnimation: 1
-  currentAnimationState: 0
   AnimationSpeed: 5
   delayBetweenLoop: 0
 --- !u!114 &560746336
@@ -9115,11 +9110,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9ae1bf2ec654621a0c3eaff2a909fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAnimationState: 0
   textureArray: []
   rendererDelegate: {fileID: 619959775}
   useSharedMaterial: 1
   doLoopAnimation: 1
-  currentAnimationState: 0
   AnimationSpeed: 5
   delayBetweenLoop: 0
 --- !u!114 &619959778
@@ -9451,11 +9446,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9ae1bf2ec654621a0c3eaff2a909fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAnimationState: 0
   textureArray: []
   rendererDelegate: {fileID: 633401706}
   useSharedMaterial: 1
   doLoopAnimation: 1
-  currentAnimationState: 0
   AnimationSpeed: 5
   delayBetweenLoop: 0
 --- !u!114 &633401709
@@ -9689,10 +9684,10 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: -371167595, guid: 8aeec1ebe6d8f4bebb4be1fe726ad8f1, type: 3}
-    m_PressedSprite: {fileID: -1120123842, guid: 8aeec1ebe6d8f4bebb4be1fe726ad8f1, type: 3}
+    m_HighlightedSprite: {fileID: 447194026, guid: fd06b497cb6b84406a2bb3f17885a511, type: 3}
+    m_PressedSprite: {fileID: 117996961, guid: fd06b497cb6b84406a2bb3f17885a511, type: 3}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 1672002112, guid: fd06b497cb6b84406a2bb3f17885a511, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -9724,7 +9719,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1828127096, guid: 8aeec1ebe6d8f4bebb4be1fe726ad8f1, type: 3}
+  m_Sprite: {fileID: -756008169, guid: fd06b497cb6b84406a2bb3f17885a511, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11478,7 +11473,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 155, y: 51.55}
+  m_AnchoredPosition: {x: 155, y: 14}
   m_SizeDelta: {x: 197.5, y: 88}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &739079247
@@ -11501,7 +11496,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1242444406, guid: afe702bbbed6b40a588864719c2696c0, type: 3}
+  m_Sprite: {fileID: -764129176, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12327,7 +12322,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -157.9}
+  m_AnchoredPosition: {x: -297, y: 174}
   m_SizeDelta: {x: 91.98, y: 76.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &813518731
@@ -12359,8 +12354,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 1878260008, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
-    m_PressedSprite: {fileID: 1147367747, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
+    m_HighlightedSprite: {fileID: 1529748814, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
+    m_PressedSprite: {fileID: -53304866, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -12394,7 +12389,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 569891061, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
+  m_Sprite: {fileID: 1227215345, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12554,8 +12549,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: -869108838, guid: afe702bbbed6b40a588864719c2696c0, type: 3}
-    m_PressedSprite: {fileID: -377337506, guid: afe702bbbed6b40a588864719c2696c0, type: 3}
+    m_HighlightedSprite: {fileID: -498888187, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
+    m_PressedSprite: {fileID: 975322000, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -12589,7 +12584,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1838451852, guid: afe702bbbed6b40a588864719c2696c0, type: 3}
+  m_Sprite: {fileID: 1700637219, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -13274,7 +13269,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 204, y: -45.449997}
+  m_AnchoredPosition: {x: 204, y: -83}
   m_SizeDelta: {x: 91.98, y: 76.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &858339565
@@ -13306,8 +13301,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 1871151613, guid: afe702bbbed6b40a588864719c2696c0, type: 3}
-    m_PressedSprite: {fileID: -129877133, guid: afe702bbbed6b40a588864719c2696c0, type: 3}
+    m_HighlightedSprite: {fileID: 1571034861, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
+    m_PressedSprite: {fileID: 102124955, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -13341,7 +13336,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 931058452, guid: afe702bbbed6b40a588864719c2696c0, type: 3}
+  m_Sprite: {fileID: -1065534000, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -13622,8 +13617,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 556180343, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
-    m_PressedSprite: {fileID: 1652695468, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
+    m_HighlightedSprite: {fileID: 1340672155, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
+    m_PressedSprite: {fileID: -764129176, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -13657,7 +13652,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 348874479, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
+  m_Sprite: {fileID: -574871090, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -14469,11 +14464,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9ae1bf2ec654621a0c3eaff2a909fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAnimationState: 0
   textureArray: []
   rendererDelegate: {fileID: 961627812}
   useSharedMaterial: 1
   doLoopAnimation: 1
-  currentAnimationState: 0
   AnimationSpeed: 5
   delayBetweenLoop: 0
 --- !u!114 &961627815
@@ -14780,11 +14775,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9ae1bf2ec654621a0c3eaff2a909fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAnimationState: 0
   textureArray: []
   rendererDelegate: {fileID: 982187665}
   useSharedMaterial: 1
   doLoopAnimation: 1
-  currentAnimationState: 0
   AnimationSpeed: 5
   delayBetweenLoop: 0
 --- !u!114 &982187668
@@ -14890,6 +14885,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9ae1bf2ec654621a0c3eaff2a909fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAnimationState: 0
   textureArray:
   - {fileID: 21300000, guid: 7a722182f34904bc7b3e54451f8ce451, type: 3}
   - {fileID: 21300000, guid: 38e8a2793ba1a4befb57f995e34fd910, type: 3}
@@ -14905,8 +14901,7 @@ MonoBehaviour:
   rendererDelegate: {fileID: 987754602}
   useSharedMaterial: 1
   doLoopAnimation: 0
-  currentAnimationState: 0
-  AnimationSpeed: 10
+  AnimationSpeed: 9
   delayBetweenLoop: 0
 --- !u!1 &1007509613
 GameObject:
@@ -14998,11 +14993,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9ae1bf2ec654621a0c3eaff2a909fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAnimationState: 0
   textureArray: []
   rendererDelegate: {fileID: 1007509615}
   useSharedMaterial: 1
   doLoopAnimation: 1
-  currentAnimationState: 0
   AnimationSpeed: 5
   delayBetweenLoop: 0
 --- !u!114 &1007509618
@@ -15184,11 +15179,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9ae1bf2ec654621a0c3eaff2a909fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAnimationState: 0
   textureArray: []
   rendererDelegate: {fileID: 1040283557}
   useSharedMaterial: 1
   doLoopAnimation: 1
-  currentAnimationState: 0
   AnimationSpeed: 5
   delayBetweenLoop: 0
 --- !u!114 &1040283560
@@ -18161,8 +18156,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 556180343, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
-    m_PressedSprite: {fileID: 1652695468, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
+    m_HighlightedSprite: {fileID: 1340672155, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
+    m_PressedSprite: {fileID: -764129176, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -18196,7 +18191,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 348874479, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
+  m_Sprite: {fileID: -574871090, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -18783,7 +18778,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -55.999985}
+  m_AnchoredPosition: {x: 0, y: -56}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1325828589
@@ -18860,7 +18855,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281216558
+    rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -18962,7 +18957,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -55.999985}
+  m_AnchoredPosition: {x: 0, y: -56}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1328188458
@@ -19130,11 +19125,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9ae1bf2ec654621a0c3eaff2a909fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAnimationState: 0
   textureArray: []
   rendererDelegate: {fileID: 1333651440}
   useSharedMaterial: 1
   doLoopAnimation: 1
-  currentAnimationState: 0
   AnimationSpeed: 5
   delayBetweenLoop: 0
 --- !u!114 &1333651443
@@ -19241,11 +19236,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9ae1bf2ec654621a0c3eaff2a909fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAnimationState: 0
   textureArray: []
   rendererDelegate: {fileID: 1342066088}
   useSharedMaterial: 1
   doLoopAnimation: 1
-  currentAnimationState: 0
   AnimationSpeed: 5
   delayBetweenLoop: 0
 --- !u!114 &1342066091
@@ -19583,7 +19578,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -157.9}
+  m_AnchoredPosition: {x: -299, y: 172}
   m_SizeDelta: {x: 91.98, y: 76.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1410425571
@@ -19615,8 +19610,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 1878260008, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
-    m_PressedSprite: {fileID: 1147367747, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
+    m_HighlightedSprite: {fileID: 1529748814, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
+    m_PressedSprite: {fileID: -53304866, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -19650,7 +19645,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 569891061, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
+  m_Sprite: {fileID: 1227215345, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -20430,7 +20425,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -155, y: -46.9}
+  m_AnchoredPosition: {x: -155, y: -84.45}
   m_SizeDelta: {x: 553.14, y: 138.28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1444540233
@@ -21247,11 +21242,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9ae1bf2ec654621a0c3eaff2a909fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAnimationState: 0
   textureArray: []
   rendererDelegate: {fileID: 1496255620}
   useSharedMaterial: 1
   doLoopAnimation: 1
-  currentAnimationState: 0
   AnimationSpeed: 5
   delayBetweenLoop: 0
 --- !u!114 &1496255623
@@ -21358,11 +21353,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9ae1bf2ec654621a0c3eaff2a909fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAnimationState: 0
   textureArray: []
   rendererDelegate: {fileID: 1499993324}
   useSharedMaterial: 1
   doLoopAnimation: 1
-  currentAnimationState: 0
   AnimationSpeed: 5
   delayBetweenLoop: 0
 --- !u!114 &1499993327
@@ -21998,6 +21993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9ae1bf2ec654621a0c3eaff2a909fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAnimationState: 0
   textureArray:
   - {fileID: 21300000, guid: 72678171fe3d24b84b71ba6482fd3129, type: 3}
   - {fileID: 21300000, guid: 7a722182f34904bc7b3e54451f8ce451, type: 3}
@@ -22025,8 +22021,7 @@ MonoBehaviour:
   rendererDelegate: {fileID: 1539735768}
   useSharedMaterial: 1
   doLoopAnimation: 0
-  currentAnimationState: 0
-  AnimationSpeed: 10
+  AnimationSpeed: 14
   delayBetweenLoop: 0
 --- !u!114 &1539735768
 MonoBehaviour:
@@ -22208,8 +22203,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 208502893, guid: afe702bbbed6b40a588864719c2696c0, type: 3}
-    m_PressedSprite: {fileID: -1228943404, guid: afe702bbbed6b40a588864719c2696c0, type: 3}
+    m_HighlightedSprite: {fileID: 1603292367, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
+    m_PressedSprite: {fileID: 1078688238, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -22243,7 +22238,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1660285542, guid: afe702bbbed6b40a588864719c2696c0, type: 3}
+  m_Sprite: {fileID: 1387861237, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -23621,7 +23616,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 155, y: -46.9}
+  m_AnchoredPosition: {x: 155, y: -84.45}
   m_SizeDelta: {x: 197.5, y: 88}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1700221600
@@ -23644,7 +23639,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1242444406, guid: afe702bbbed6b40a588864719c2696c0, type: 3}
+  m_Sprite: {fileID: -764129176, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -24249,8 +24244,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 556180343, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
-    m_PressedSprite: {fileID: 1652695468, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
+    m_HighlightedSprite: {fileID: 1340672155, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
+    m_PressedSprite: {fileID: -764129176, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -24284,7 +24279,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 348874479, guid: 593f9e0dcc6c84a7980130d9c4cadb25, type: 3}
+  m_Sprite: {fileID: -574871090, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -24676,11 +24671,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9ae1bf2ec654621a0c3eaff2a909fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAnimationState: 0
   textureArray: []
   rendererDelegate: {fileID: 1768437710}
   useSharedMaterial: 1
   doLoopAnimation: 1
-  currentAnimationState: 0
   AnimationSpeed: 5
   delayBetweenLoop: 0
 --- !u!114 &1768437713
@@ -24898,8 +24893,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 1797485739, guid: afe702bbbed6b40a588864719c2696c0, type: 3}
-    m_PressedSprite: {fileID: -895369694, guid: afe702bbbed6b40a588864719c2696c0, type: 3}
+    m_HighlightedSprite: {fileID: -1285376479, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
+    m_PressedSprite: {fileID: 270454135, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -24933,7 +24928,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 802722923, guid: afe702bbbed6b40a588864719c2696c0, type: 3}
+  m_Sprite: {fileID: 837626587, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -25377,7 +25372,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281216558
+    rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -27106,7 +27101,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 204, y: 53}
+  m_AnchoredPosition: {x: 204, y: 15.450001}
   m_SizeDelta: {x: 91.98, y: 76.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1943279294
@@ -27138,8 +27133,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 1871151613, guid: afe702bbbed6b40a588864719c2696c0, type: 3}
-    m_PressedSprite: {fileID: -129877133, guid: afe702bbbed6b40a588864719c2696c0, type: 3}
+    m_HighlightedSprite: {fileID: 1571034861, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
+    m_PressedSprite: {fileID: 102124955, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -27173,7 +27168,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 931058452, guid: afe702bbbed6b40a588864719c2696c0, type: 3}
+  m_Sprite: {fileID: -1065534000, guid: 0ee7bfb71f5d34779864aa19fbd75b68, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -27281,11 +27276,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9ae1bf2ec654621a0c3eaff2a909fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAnimationState: 0
   textureArray: []
   rendererDelegate: {fileID: 1947494049}
   useSharedMaterial: 1
   doLoopAnimation: 1
-  currentAnimationState: 0
   AnimationSpeed: 5
   delayBetweenLoop: 0
 --- !u!114 &1947494052
@@ -28124,33 +28119,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 9d3079856487948cea7b6152fa1193dc, type: 3}
   - {fileID: 21300000, guid: f7c42cc00aa824527a4b7d6513ae59bb, type: 3}
   - {fileID: 21300000, guid: 40e698f201fa947c09663916e58cdfeb, type: 3}
-  Scatter_Sprite:
-  - {fileID: 21300000, guid: e1002ba67fafe4e9c8b225eedcf63966, type: 3}
-  - {fileID: 21300000, guid: a27c03965f8964d069ea752a6ff48f6c, type: 3}
-  - {fileID: 21300000, guid: feffe9946eb8745f29d456188991ef3b, type: 3}
-  - {fileID: 21300000, guid: 89bfb27b517bc42febcd7ed53d019fb0, type: 3}
-  - {fileID: 21300000, guid: 57a57cfccaada427897343e347ac50af, type: 3}
-  - {fileID: 21300000, guid: 0ca401b287ee449b695f0bf8b0713e7a, type: 3}
-  - {fileID: 21300000, guid: 95ed10dda4c664555b446b651992669c, type: 3}
-  - {fileID: 21300000, guid: c20f987bd4dab41148633688fe60ff0f, type: 3}
-  - {fileID: 21300000, guid: 1d1c2ec7b1d4646b7b9c9bd264903def, type: 3}
-  - {fileID: 21300000, guid: 22fcdfeed3b8547c681e93b83326f303, type: 3}
-  - {fileID: 21300000, guid: 1f2c166a81c104c29a0eda20a454f5e5, type: 3}
-  - {fileID: 21300000, guid: d234c057219204f76a389e764f52aac9, type: 3}
-  - {fileID: 21300000, guid: dc93c8758810a4e36b4bc4c54cab8d49, type: 3}
-  - {fileID: 21300000, guid: 359ba6c57b1f948f09c4dac4ab58b4b6, type: 3}
-  - {fileID: 21300000, guid: 147a86feb506043c29f93b56341f8e12, type: 3}
-  - {fileID: 21300000, guid: a3f7e6fc28a0447e497821a7acc20939, type: 3}
-  - {fileID: 21300000, guid: 8edbc0b9b8038462b9f247f42d2c67bf, type: 3}
-  - {fileID: 21300000, guid: 8a2ec8760a1064ed497a9943cc4a411b, type: 3}
-  - {fileID: 21300000, guid: 7d0426ed4aaf54cfab66f78e8a4587bc, type: 3}
-  - {fileID: 21300000, guid: db5824cdfdb8c4af8a14e91f2f38948c, type: 3}
-  - {fileID: 21300000, guid: e8c0668ab8340466fa94add050dc142d, type: 3}
-  - {fileID: 21300000, guid: 78a395b1438d6467caa96de4489dfa74, type: 3}
-  - {fileID: 21300000, guid: e39cf22477c46476ba2e4134343da2cf, type: 3}
-  - {fileID: 21300000, guid: 58b33f04597db43e698e8034901db031, type: 3}
-  - {fileID: 21300000, guid: 7ca53c445d0b044179beaba92d4745fd, type: 3}
-  - {fileID: 21300000, guid: 39a43e56f73bf4adb932eb7d0908cb9e, type: 3}
   Cleopatra_Sprite:
   - {fileID: 21300000, guid: 05c831262f33f447893f71584c05ec75, type: 3}
   - {fileID: 21300000, guid: 899b32355dab64e37b3163365bb5f4d8, type: 3}
@@ -29123,17 +29091,16 @@ MonoBehaviour:
   audioPlayer_button: {fileID: 1742219840284188182}
   audioSpin_button: {fileID: 3653419156959999269}
   clips:
-  - {fileID: 8300000, guid: 797736b99c9f443cfbe8df97ba165a08, type: 3}
-  - {fileID: 8300000, guid: cd4727b4a54c54682bd1c010320b41ef, type: 3}
-  - {fileID: 8300000, guid: 692fef4dceb8b410bbe30f4b667345dc, type: 3}
-  - {fileID: 8300000, guid: 797736b99c9f443cfbe8df97ba165a08, type: 3}
-  - {fileID: 8300000, guid: cd4727b4a54c54682bd1c010320b41ef, type: 3}
-  - {fileID: 8300000, guid: 567d42d78a31a446a86f8a75b656d45a, type: 3}
-  - {fileID: 8300000, guid: eff5c8ad9b6ff4bc9bdcc1cc88c87227, type: 3}
+  - {fileID: 8300000, guid: 7d27b2edc5d83406390780b473f825ef, type: 3}
+  - {fileID: 8300000, guid: b11f1890e37aa42b8ae1396e5a1ea7fa, type: 3}
+  - {fileID: 8300000, guid: 317ac723d1c9b4a09a52c3b9de61d4a6, type: 3}
+  - {fileID: 8300000, guid: efc19a20445bc4073b59ac30f9ea39a9, type: 3}
+  - {fileID: 8300000, guid: 55e330870dd194ff3a110bd513c8a14b, type: 3}
+  - {fileID: 8300000, guid: 0ac6bd293637f40c99c972476ad95988, type: 3}
+  - {fileID: 8300000, guid: 76cd008638a4b4754b7348c8f57b2896, type: 3}
   Bonusclips:
-  - {fileID: 8300000, guid: cd4727b4a54c54682bd1c010320b41ef, type: 3}
-  - {fileID: 8300000, guid: 692fef4dceb8b410bbe30f4b667345dc, type: 3}
-  - {fileID: 8300000, guid: ae93c0ef3f2bf4c68842cb59ea88314d, type: 3}
+  - {fileID: 8300000, guid: b11f1890e37aa42b8ae1396e5a1ea7fa, type: 3}
+  - {fileID: 8300000, guid: 317ac723d1c9b4a09a52c3b9de61d4a6, type: 3}
   bg_audioBonus: {fileID: 2088709731818720374}
   audioPlayer_Bonus: {fileID: 4701576512886553455}
 --- !u!82 &1099861978960025974
@@ -29359,7 +29326,7 @@ AudioSource:
   m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 6e3010398d0a64fc7953f98a0538a174, type: 3}
+  m_audioClip: {fileID: 8300000, guid: c9378cfd2221445269fdd017cae296dc, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.4
   m_Pitch: 1
@@ -29647,7 +29614,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: f8d433ac12d0c4da3bba299e7b3af496, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 8d582ca2b85224da7856cc2b9e78905d, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.4
   m_Pitch: 1

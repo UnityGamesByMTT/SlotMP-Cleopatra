@@ -4,10 +4,8 @@ using UnityEngine.UI;
 public class BoxScripting : MonoBehaviour
 {
     internal bool isAnim = false;
-    [SerializeField]
-    private Image BoxBg_Image;
-    [SerializeField]
-    private GameObject BoxBg_Object;
+    [SerializeField] private Image BoxBg_Image;
+    [SerializeField] private GameObject BoxBg_Object;
 
     internal void SetBG(Sprite bg)
     {

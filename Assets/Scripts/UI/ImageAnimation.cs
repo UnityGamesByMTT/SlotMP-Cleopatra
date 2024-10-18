@@ -11,27 +11,16 @@ public class ImageAnimation : MonoBehaviour
 		PAUSED
 	}
 
+	[HideInInspector] public ImageState currentAnimationState;
 	public static ImageAnimation Instance;
-
 	public List<Sprite> textureArray;
-
 	public Image rendererDelegate;
-
 	public bool useSharedMaterial = true;
-
 	public bool doLoopAnimation = true;
-
-	[HideInInspector]
-	public ImageState currentAnimationState;
-
 	private int indexOfTexture;
-
 	private float idealFrameRate = 0.0416666679f;
-
 	private float delayBetweenAnimation;
-
 	public float AnimationSpeed = 5f;
-
 	public float delayBetweenLoop;
 
 	private void Awake()
@@ -40,17 +29,10 @@ public class ImageAnimation : MonoBehaviour
 		{
 			Instance = this;
 		}
-		//StartAnimation(); //Testing 
     }
-
-	private void OnEnable()
-	{
-		
-	}
 
 	private void OnDisable()
 	{
-		//rendererDelegate.sprite = textureArray[0];
 		StopAnimation();
 	}
 

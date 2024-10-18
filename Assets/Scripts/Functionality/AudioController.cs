@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class AudioController : MonoBehaviour
 {
@@ -64,9 +61,8 @@ public class AudioController : MonoBehaviour
         int index = 0;
         switch (type)
         {
-            case "spin":
+            case "bigwin":
                 index = 0;
-                audioPlayer_wl.loop = true;
                 break;
             case "win":
                 index = 1;
@@ -84,28 +80,6 @@ public class AudioController : MonoBehaviour
         StopWLAaudio();
         audioPlayer_wl.clip = clips[index];
         audioPlayer_wl.Play();
-
-    }
-
-    internal void PlayBonusAudio(string type)
-    {
-        audioPlayer_wl.loop = false;
-        int index = 0;
-        switch (type)
-        {
-            case "win":
-                index = 0;
-                break;
-            case "lose":
-                index = 1;
-                break;
-            case "cycleSpin":
-                index = 2;
-                break;
-        }
-        StopBonusAaudio();
-        audioPlayer_Bonus.clip = Bonusclips[index];
-        audioPlayer_Bonus.Play();
     }
 
     internal void PlayButtonAudio()
@@ -122,17 +96,6 @@ public class AudioController : MonoBehaviour
     {
         audioPlayer_wl.Stop();
         audioPlayer_wl.loop = false;
-    }
-
-    internal void StopBonusAaudio()
-    {
-        audioPlayer_Bonus.Stop();
-        audioPlayer_Bonus.loop = false;
-    }
-
-    internal void StopBgAudio()
-    {
-        bg_adudio.Stop();
     }
 
     internal void ToggleMute(bool toggle, string type)
