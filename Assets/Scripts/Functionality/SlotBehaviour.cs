@@ -505,15 +505,15 @@ public class SlotBehaviour : MonoBehaviour
 
     internal void CheckWinPopups()
     {
-        if (SocketManager.resultData.WinAmout >= currentTotalBet * 10 && SocketManager.resultData.WinAmout < currentTotalBet * 15)
+        if (SocketManager.resultData.WinAmout >= currentTotalBet * 5 && SocketManager.resultData.WinAmout < currentTotalBet * 10)
         {
             uiManager.PopulateWin(1);
         }
-        else if (SocketManager.resultData.WinAmout >= currentTotalBet * 15 && SocketManager.resultData.WinAmout < currentTotalBet * 20)
+        else if (SocketManager.resultData.WinAmout >= currentTotalBet * 10 && SocketManager.resultData.WinAmout < currentTotalBet * 15)
         {
             uiManager.PopulateWin(2);
         }
-        else if (SocketManager.resultData.WinAmout >= currentTotalBet * 20)
+        else if (SocketManager.resultData.WinAmout >= currentTotalBet * 15)
         {
             uiManager.PopulateWin(3);
         }
@@ -722,6 +722,7 @@ public class SlotBehaviour : MonoBehaviour
                 if (LineIDs.Count < 2)
                 {
                     WinAnimationFin = true;
+                    yield return new WaitForSeconds(2f);
                     yield break;
                 }
                 yield return new WaitForSeconds(2f);
