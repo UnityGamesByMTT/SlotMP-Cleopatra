@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 using TMPro;
 
 public class BonusController : MonoBehaviour
@@ -19,12 +20,14 @@ public class BonusController : MonoBehaviour
     [SerializeField] private TMP_Text BonusClosingText;
     [SerializeField] private TMP_Text BonusInBonusText;
     [SerializeField] private TMP_Text BonusWinningsText;
+    [SerializeField] private RectTransform BonusOpeningTitleRT;
+    [SerializeField] private RectTransform BonusInBonusTitleRT;
+    [SerializeField] private RectTransform BonusClosingTitleRT;
 
     internal void StartBonus(int freespins)
     {
         if (FSnum_Text) FSnum_Text.text = freespins.ToString();
         if (BonusWinningsText) BonusWinningsText.text = "0.00";
-        if (BonusOpeningText) BonusOpeningText.text = freespins.ToString() + " FREE SPINS";
         if (BonusGame_Panel) BonusGame_Panel.SetActive(true);
         StartCoroutine(BonusGameStartRoutine(freespins));
     }
@@ -38,9 +41,9 @@ public class BonusController : MonoBehaviour
 
         yield return new WaitUntil(() => BonusOpen_ImageAnimation.rendererDelegate.sprite == BonusOpen_ImageAnimation.textureArray[16]);
 
-        BonusOpen_ImageAnimation.PauseAnimation();
         BonusOpeningUI.SetActive(true);
-        yield return new WaitForSeconds(2f);
+        BonusOpen_ImageAnimation.PauseAnimation();
+        yield return StartCoroutine(TextAnimation(BonusOpeningText, BonusOpeningTitleRT, spins, 0, true));
         BonusOpeningUI.SetActive(false);
         BonusOpen_ImageAnimation.ResumeAnimation();
 
@@ -58,18 +61,14 @@ public class BonusController : MonoBehaviour
 
         yield return new WaitUntil(() => BonusInBonus_ImageAnimation.rendererDelegate.sprite == BonusInBonus_ImageAnimation.textureArray[5]);
 
+        BonusInBonusUI.SetActive(true);
         BonusInBonus_ImageAnimation.PauseAnimation();
 
-        int currFS = 0;
-        int.TryParse(FSnum_Text.text, out currFS);
-        Debug.Log("Current Spins: " + currFS.ToString());
-        FSnum_Text.text = SocketManager.resultData.freeSpins.count.ToString();
-        Debug.Log("Total Spins now: " + FSnum_Text.text);
-        print("Free Spins Added: " + (SocketManager.resultData.freeSpins.count - currFS).ToString());
-        BonusInBonusText.text = (SocketManager.resultData.freeSpins.count-currFS).ToString() + " FREE SPINS";
+        if(!int.TryParse(FSnum_Text.text, out int currFS)) Debug.LogError("error while conversion");
 
-        BonusInBonusUI.SetActive(true);
-        yield return new WaitForSeconds(2f);
+        //FSnum_Text.text = SocketManager.resultData.freeSpins.count.ToString();
+
+        yield return StartCoroutine(TextAnimation(BonusInBonusText, BonusInBonusTitleRT, SocketManager.resultData.freeSpins.count - currFS, 0, true));
         BonusInBonusUI.SetActive(false);
         BonusInBonus_ImageAnimation.ResumeAnimation();
 
@@ -83,17 +82,20 @@ public class BonusController : MonoBehaviour
 
     internal IEnumerator BonusGameEndRoutine()
     {
-        if (BonusClosingText) BonusClosingText.text = BonusWinningsText.text;
         BonusClose_ImageAnimation.StartAnimation();
 
-        double.TryParse(BonusClosingText.text, out double totalWin);
+        if(!double.TryParse(BonusWinningsText.text, out double totalWin))
+        {
+            Debug.LogError("error while conversion");
+        }
+
         if (totalWin > 0)
         {
             yield return new WaitUntil(() => BonusClose_ImageAnimation.rendererDelegate.sprite == BonusClose_ImageAnimation.textureArray[6]);
 
-            BonusClose_ImageAnimation.PauseAnimation();
             BonusClosingUI.SetActive(true);
-            yield return new WaitForSeconds(3f);
+            BonusClose_ImageAnimation.PauseAnimation();
+            yield return StartCoroutine(TextAnimation(BonusClosingText, BonusClosingTitleRT, 0, totalWin));
             BonusClosingUI.SetActive(false);
             BonusClose_ImageAnimation.ResumeAnimation();
         }
@@ -104,5 +106,40 @@ public class BonusController : MonoBehaviour
 
         if (BonusGame_Panel) BonusGame_Panel.SetActive(false);
         BonusWinningsText.text = "0";
+    }
+
+    private IEnumerator TextAnimation(TMP_Text textObject, RectTransform imageObject, int IntGoal, double DoubleGoal, bool spin = false)
+    {
+        if (IntGoal != 0)
+        {
+            int start = 0;
+            if (!spin)
+            {
+                DOTween.To(() => start, (val) => start = val, IntGoal, .8f).OnUpdate(() =>
+                {
+                    if (textObject) textObject.text = start.ToString("f2");
+                });
+            }
+            else
+            {
+                DOTween.To(() => start, (val) => start = val, IntGoal, .8f).OnUpdate(() =>
+                {
+                    if (textObject) textObject.text = start.ToString() + " FREE SPINS.";
+                });
+            }
+            
+        }
+        else if(DoubleGoal != 0)
+        {
+            double start = 0;
+            DOTween.To(() => start, (val) => start = val, DoubleGoal, .8f).OnUpdate(() =>
+             {
+                 if(textObject) textObject.text = start.ToString("f2");
+             });
+        }
+
+        yield return imageObject.DOScale(new Vector2(1.5f, 1.5f), 1.5f).SetLoops(2, LoopType.Yoyo).SetDelay(0).WaitForCompletion();
+        yield return imageObject.DOScale(new Vector2(1, 1), 0.5f).WaitForCompletion();
+        yield return new WaitForSeconds(1f);
     }
 }

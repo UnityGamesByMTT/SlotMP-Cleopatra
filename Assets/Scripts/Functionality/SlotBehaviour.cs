@@ -97,31 +97,67 @@ public class SlotBehaviour : MonoBehaviour
         IsAutoSpin = false;
 
         if (SlotStart_Button) SlotStart_Button.onClick.RemoveAllListeners();
-        if (SlotStart_Button) SlotStart_Button.onClick.AddListener(delegate { StartSlots(); });
+        if (SlotStart_Button) SlotStart_Button.onClick.AddListener(delegate
+        {
+            uiManager.CanCloseMenu();
+            StartSlots();
+        });
 
         if (TotalBetPlus_Button) TotalBetPlus_Button.onClick.RemoveAllListeners();
-        if (TotalBetPlus_Button) TotalBetPlus_Button.onClick.AddListener(delegate { ChangeBet(true); });
+        if (TotalBetPlus_Button) TotalBetPlus_Button.onClick.AddListener(delegate
+        {
+            uiManager.CanCloseMenu();
+            ChangeBet(true);
+        });
 
         if (TotalBetMinus_Button) TotalBetMinus_Button.onClick.RemoveAllListeners();
-        if (TotalBetMinus_Button) TotalBetMinus_Button.onClick.AddListener(delegate { ChangeBet(false); });
+        if (TotalBetMinus_Button) TotalBetMinus_Button.onClick.AddListener(delegate
+        {
+            uiManager.CanCloseMenu();
+            ChangeBet(false);
+        });
 
         if (LineBetPlus_Button) LineBetPlus_Button.onClick.RemoveAllListeners();
-        if (LineBetPlus_Button) LineBetPlus_Button.onClick.AddListener(delegate { ChangeBet(true); });
+        if (LineBetPlus_Button) LineBetPlus_Button.onClick.AddListener(delegate
+        {
+            uiManager.CanCloseMenu();
+            ChangeBet(true);
+        });
 
         if (LineBetMinus_Button) LineBetMinus_Button.onClick.RemoveAllListeners();
-        if (LineBetMinus_Button) LineBetMinus_Button.onClick.AddListener(delegate { ChangeBet(false); });
+        if (LineBetMinus_Button) LineBetMinus_Button.onClick.AddListener(delegate
+        {
+            uiManager.CanCloseMenu();
+            ChangeBet(false);
+        });
 
         if (AutoSpin_Button) AutoSpin_Button.onClick.RemoveAllListeners();
-        if (AutoSpin_Button) AutoSpin_Button.onClick.AddListener(AutoSpin);
+        if (AutoSpin_Button) AutoSpin_Button.onClick.AddListener(delegate
+        {
+            uiManager.CanCloseMenu();
+            AutoSpin();
+        });
 
         if (AutoSpinStop_Button) AutoSpinStop_Button.onClick.RemoveAllListeners();
-        if (AutoSpinStop_Button) AutoSpinStop_Button.onClick.AddListener(StopAutoSpin);
+        if (AutoSpinStop_Button) AutoSpinStop_Button.onClick.AddListener(delegate
+        {
+            uiManager.CanCloseMenu();
+            StopAutoSpin();
+        });
 
         if (SkipWinAnimation_Button) SkipWinAnimation_Button.onClick.RemoveAllListeners();
-        if (SkipWinAnimation_Button) SkipWinAnimation_Button.onClick.AddListener(StopGameAnimation);
+        if (SkipWinAnimation_Button) SkipWinAnimation_Button.onClick.AddListener(delegate
+        {
+            uiManager.CanCloseMenu();
+            StopGameAnimation();
+	    });
 
         if (BonusSkipWinAnimation_Button) BonusSkipWinAnimation_Button.onClick.RemoveAllListeners();
-        if (BonusSkipWinAnimation_Button) BonusSkipWinAnimation_Button.onClick.AddListener(StopGameAnimation);
+        if (BonusSkipWinAnimation_Button) BonusSkipWinAnimation_Button.onClick.AddListener(delegate
+        {
+            uiManager.CanCloseMenu();
+            StopGameAnimation();
+        });
 
         if (FSBoard_Object) FSBoard_Object.SetActive(false);
 
@@ -151,8 +187,6 @@ public class SlotBehaviour : MonoBehaviour
     {
         if (IsAutoSpin)
         { 
-            if (AutoSpinStop_Button) AutoSpinStop_Button.gameObject.SetActive(false);
-            if (AutoSpin_Button) AutoSpin_Button.gameObject.SetActive(true);
             StartCoroutine(StopAutoSpinCoroutine());
         }
     }
@@ -169,17 +203,22 @@ public class SlotBehaviour : MonoBehaviour
 
             StartSlots(IsAutoSpin);
             yield return tweenroutine;
+            yield return new WaitForSeconds(.5f);
         }
     }
 
     private IEnumerator StopAutoSpinCoroutine()
     {
+        if (AutoSpinStop_Button) AutoSpinStop_Button.interactable = false;
         yield return new WaitUntil(() => !IsSpinning);
         ToggleButtonGrp(true);
         if (AutoSpinRoutine != null || tweenroutine != null)
         {
             StopCoroutine(AutoSpinRoutine);
             StopCoroutine(tweenroutine);
+            if (AutoSpinStop_Button) AutoSpinStop_Button.gameObject.SetActive(false);
+            if (AutoSpin_Button) AutoSpin_Button.gameObject.SetActive(true);
+            AutoSpinStop_Button.interactable = true;
             tweenroutine = null;
             AutoSpinRoutine = null;
             IsAutoSpin = false;
@@ -218,7 +257,7 @@ public class SlotBehaviour : MonoBehaviour
             StartSlots(false, true);
 
             yield return tweenroutine;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(.5f);
             i++;
         }
         ToggleButtonGrp(true);
@@ -438,9 +477,13 @@ public class SlotBehaviour : MonoBehaviour
         {
             uiManager.PopulateWin(4); 
         }
-        else
+        else if(!bonus)
         {
             CheckWinPopups();
+        }
+        else
+        {
+            CheckPopups = false;
         }
 
         if(SocketManager.playerdata.currentWining <= 0 && SocketManager.resultData.jackpot <= 0 && !SocketManager.resultData.freeSpins.isNewAdded)
