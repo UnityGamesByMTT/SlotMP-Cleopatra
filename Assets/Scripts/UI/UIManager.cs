@@ -36,6 +36,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button SettingsQuit_Button;
     [SerializeField] private Button Sound_Button;
     [SerializeField] private Button Music_Button;
+    [SerializeField] private RectTransform SoundToggle_RT;
+    [SerializeField] private RectTransform MusicToggle_RT;
 
     [Header("Paytable Objects")]
     [SerializeField] private GameObject PaytableMenuObject;
@@ -59,6 +61,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button Menu_Button;
     [SerializeField] private Button Info_Button;
     [SerializeField] private Button Settings_Button;
+    [SerializeField] private Button RaycastLayerButton;
     [SerializeField] private RectTransform Info_BttnTransform;
     [SerializeField] private RectTransform Settings_BttnTransform;
 
@@ -79,6 +82,8 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        if (RaycastLayerButton) RaycastLayerButton.onClick.RemoveAllListeners();
+        if (RaycastLayerButton) RaycastLayerButton.onClick.AddListener(() => CanCloseMenu());
 
         if (LBExit_Button) LBExit_Button.onClick.RemoveAllListeners();
         if (LBExit_Button) LBExit_Button.onClick.AddListener(delegate { ClosePopup(LBPopup_Object); });
@@ -89,6 +94,7 @@ public class UIManager : MonoBehaviour
         if (Sound_Button) Sound_Button.onClick.RemoveAllListeners();
         if (Sound_Button) Sound_Button.onClick.AddListener(delegate
         {
+            Debug.Log("Here");
             if (isSound)
             {
                 SoundOnOFF(false);
@@ -151,6 +157,14 @@ public class UIManager : MonoBehaviour
 
         if (PaytableRight_Button) PaytableRight_Button.onClick.RemoveAllListeners();
         if (PaytableRight_Button) PaytableRight_Button.onClick.AddListener(()=> ChangePage(true));
+    }
+
+    internal void CanCloseMenu()
+    {
+        if (isMenu)
+        {
+            OpenCloseMenu(false);
+        }
     }
 
     private void ChangePage(bool IncDec)
@@ -240,8 +254,7 @@ public class UIManager : MonoBehaviour
         {
             isSound = true;
             audioController.ToggleMute(!state, "sound");
-            RectTransform soundTransform = Sound_Button.GetComponent<RectTransform>();
-            DOTween.To(() => soundTransform.anchoredPosition, (val) => soundTransform.anchoredPosition = val, new Vector2(soundTransform.anchoredPosition.x + 95, soundTransform.anchoredPosition.y), 0.1f).OnUpdate(() =>
+            DOTween.To(() => SoundToggle_RT.anchoredPosition, (val) => SoundToggle_RT.anchoredPosition = val, new Vector2(SoundToggle_RT.anchoredPosition.x + 95, SoundToggle_RT.anchoredPosition.y), 0.1f).OnUpdate(() =>
             {
                 LayoutRebuilder.ForceRebuildLayoutImmediate(Info_BttnTransform);
             });
@@ -250,8 +263,7 @@ public class UIManager : MonoBehaviour
         {
             isSound = false;
             audioController.ToggleMute(!state, "sound");
-            RectTransform soundTransform = Sound_Button.GetComponent<RectTransform>();
-            DOTween.To(() => soundTransform.anchoredPosition, (val) => soundTransform.anchoredPosition = val, new Vector2(soundTransform.anchoredPosition.x - 95, soundTransform.anchoredPosition.y), 0.1f).OnUpdate(() =>
+            DOTween.To(() => SoundToggle_RT.anchoredPosition, (val) => SoundToggle_RT.anchoredPosition = val, new Vector2(SoundToggle_RT.anchoredPosition.x - 95, SoundToggle_RT.anchoredPosition.y), 0.1f).OnUpdate(() =>
             {
                 LayoutRebuilder.ForceRebuildLayoutImmediate(Info_BttnTransform);
             });
@@ -264,8 +276,7 @@ public class UIManager : MonoBehaviour
         {
             isMusic = true;
             audioController.ToggleMute(!state, "music");
-            RectTransform musicTransform = Music_Button.GetComponent<RectTransform>();
-            DOTween.To(() => musicTransform.anchoredPosition, (val) => musicTransform.anchoredPosition = val, new Vector2(musicTransform.anchoredPosition.x + 95, musicTransform.anchoredPosition.y), 0.1f).OnUpdate(() =>
+            DOTween.To(() => MusicToggle_RT.anchoredPosition, (val) => MusicToggle_RT.anchoredPosition = val, new Vector2(MusicToggle_RT.anchoredPosition.x + 95, MusicToggle_RT.anchoredPosition.y), 0.1f).OnUpdate(() =>
             {
                 LayoutRebuilder.ForceRebuildLayoutImmediate(Info_BttnTransform);
             });
@@ -274,8 +285,7 @@ public class UIManager : MonoBehaviour
         {
             isMusic = false;
             audioController.ToggleMute(!state, "music");
-            RectTransform musicTransform = Music_Button.GetComponent<RectTransform>();
-            DOTween.To(() => musicTransform.anchoredPosition, (val) => musicTransform.anchoredPosition = val, new Vector2(musicTransform.anchoredPosition.x - 95, musicTransform.anchoredPosition.y), 0.1f).OnUpdate(() =>
+            DOTween.To(() => MusicToggle_RT.anchoredPosition, (val) => MusicToggle_RT.anchoredPosition = val, new Vector2(MusicToggle_RT.anchoredPosition.x - 95, MusicToggle_RT.anchoredPosition.y), 0.1f).OnUpdate(() =>
             {
                 LayoutRebuilder.ForceRebuildLayoutImmediate(Info_BttnTransform);
             });
@@ -285,19 +295,17 @@ public class UIManager : MonoBehaviour
     private void OpenSettingsPanel()
     {
         if (audioController) audioController.PlayButtonAudio();
-
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
         if (Settings_Object) Settings_Object.SetActive(true);
-        OpenCloseMenu(false);
+        CanCloseMenu();
     }
 
     private void OpenQuitPanel()
     {
         if (audioController) audioController.PlayButtonAudio();
-
-
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
         if (QuitMenuObject) QuitMenuObject.SetActive(true);
+        CanCloseMenu();
     }
 
     private void OpenPaytablePanel()
@@ -319,11 +327,12 @@ public class UIManager : MonoBehaviour
 
         if (PaytableMenuObject) PaytableMenuObject.SetActive(true);
 
-        OpenCloseMenu(false);
+        CanCloseMenu();
     }
 
     internal void LowBalPopup()
     {
+        CanCloseMenu();
         OpenPopup(LBPopup_Object);
     }
 
@@ -331,6 +340,7 @@ public class UIManager : MonoBehaviour
     {
         if (!isExit)
         {
+            CanCloseMenu();
             OpenPopup(DisconnectPopup_Object);
         }
     }
