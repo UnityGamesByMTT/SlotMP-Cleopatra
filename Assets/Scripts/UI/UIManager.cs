@@ -5,6 +5,8 @@ using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Networking;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 
 public class UIManager : MonoBehaviour
 {
@@ -14,11 +16,14 @@ public class UIManager : MonoBehaviour
     [Header("Win Popup")]
     [SerializeField] private Image Win_Image;
     [SerializeField] private GameObject WinPopup_Object;
-    [SerializeField] private TMP_Text Win_Text;
     [SerializeField] private RectTransform WinBgAnimation;
     [SerializeField] private Sprite BigWin_Sprite, HugeWin_Sprite, MegaWin_Sprite, Jackpot_Sprite;
     [SerializeField] private ImageAnimation JackpotImageAnimation;
+    [SerializeField] private Button SkipWinAnimation;
     private Tween ImageRotationTween;
+    private Tween ImageScaleTween;
+    private Tween AnimationScaleTween;
+    private Tween DelayTween;
 
     [Header("Disconnection Popup")]
     [SerializeField] private Button CloseDisconnect_Button;
@@ -82,6 +87,9 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        if(SkipWinAnimation) SkipWinAnimation.onClick.RemoveAllListeners();
+        if(SkipWinAnimation) SkipWinAnimation.onClick.AddListener(SkipWin);
+
         if (RaycastLayerButton) RaycastLayerButton.onClick.RemoveAllListeners();
         if (RaycastLayerButton) RaycastLayerButton.onClick.AddListener(() => CanCloseMenu());
 
@@ -366,16 +374,26 @@ public class UIManager : MonoBehaviour
 
         StartPopupAnim();
     }
-
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Space))
-    //    {
-    //        PopulateWin(4);
-    //        Debug.Log("Called");
-    //    }
-    //}
-
+    void SkipWin(){
+        if(ImageScaleTween!=null){
+            ImageScaleTween.Kill();
+            ImageScaleTween=null;
+        }
+        if(JackpotImageAnimation.currentAnimationState == ImageAnimation.ImageState.PLAYING){
+            JackpotImageAnimation.StopAnimation();
+        }   
+        if(AnimationScaleTween!=null){
+            AnimationScaleTween.Kill();
+            AnimationScaleTween=null;
+        }
+        if(DelayTween!=null){
+            DelayTween.Kill();
+            DelayTween=null;
+        }
+        Win_Image.rectTransform.DOScale(Vector3.zero, .2f).SetEase(Ease.InBack).OnComplete(() => ClosePopup(WinPopup_Object));
+        WinBgAnimation.DOScale(Vector3.zero, .2f).SetEase(Ease.InBack).OnComplete(()=> ImageRotationTween.Kill());
+        slotManager.CheckPopups = false;
+    }
     private void StartPopupAnim()
     {
         if (WinPopup_Object) WinPopup_Object.SetActive(true);
@@ -383,22 +401,24 @@ public class UIManager : MonoBehaviour
 
         audioController.PlayWLAudio("bigwin");
 
-        Win_Image.rectTransform.DOScale(new Vector3(1, 1, 1), .5f).SetEase(Ease.OutCirc);
+        ImageScaleTween = Win_Image.rectTransform.DOScale(new Vector3(1, 1, 1), .5f).SetEase(Ease.OutCirc)
+        .OnComplete(()=>{ ImageScaleTween.Kill(); ImageScaleTween=null; });
 
         ImageRotationTween = WinBgAnimation.DORotate(new Vector3(0, 0, 360), 2f, RotateMode.FastBeyond360)
-            .SetEase(Ease.Linear) // Make the rotation constant
-            .SetLoops(-1, LoopType.Incremental); // Rotate infinitely in an incremental way
+        .SetEase(Ease.Linear) // Make the rotation constant
+        .SetLoops(-1, LoopType.Incremental); // Rotate infinitely in an incremental way
 
-        WinBgAnimation.DOScale(Vector3.one, .6f).SetEase(Ease.OutCirc);
+        AnimationScaleTween = WinBgAnimation.DOScale(Vector3.one, .6f).SetEase(Ease.OutCirc)
+        .OnComplete(()=>{ AnimationScaleTween.Kill(); AnimationScaleTween=null; });
 
-        DOVirtual.DelayedCall(3f, () =>
+        DelayTween = DOVirtual.DelayedCall(3f, () =>
         {
             Win_Image.rectTransform.DOScale(Vector3.zero, .5f).SetEase(Ease.InBack).OnComplete(() => ClosePopup(WinPopup_Object));
 
             WinBgAnimation.DOScale(Vector3.zero, .5f).SetEase(Ease.InBack).OnComplete(()=> ImageRotationTween.Kill());
 
             slotManager.CheckPopups = false;
-        });
+        }).OnComplete(()=> { DelayTween.Kill(); DelayTween=null;});
     }
 
     internal void ADfunction()
@@ -419,15 +439,15 @@ public class UIManager : MonoBehaviour
             string text = null;
             if (paylines.symbols[i].Multiplier[0][0] != 0)
             {
-                text += "5x - " + paylines.symbols[i].Multiplier[0][0];
+                text += "5x - " + paylines.symbols[i].Multiplier[0][0]+"x";
             }
             if (paylines.symbols[i].Multiplier[1][0] != 0)
             {
-                text += "\n4x - " + paylines.symbols[i].Multiplier[1][0];
+                text += "\n4x - " + paylines.symbols[i].Multiplier[1][0]+"x";
             }
             if (paylines.symbols[i].Multiplier[2][0] != 0)
             {
-                text += "\n3x - " + paylines.symbols[i].Multiplier[2][0];
+                text += "\n3x - " + paylines.symbols[i].Multiplier[2][0]+"x";
             }
             if (SymbolsText[i]) SymbolsText[i].text = text;
         }

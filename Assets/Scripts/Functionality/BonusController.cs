@@ -117,7 +117,7 @@ public class BonusController : MonoBehaviour
             {
                 DOTween.To(() => start, (val) => start = val, IntGoal, .8f).OnUpdate(() =>
                 {
-                    if (textObject) textObject.text = start.ToString("f2");
+                    if (textObject) textObject.text = start.ToString("f3");
                 });
             }
             else
@@ -134,7 +134,7 @@ public class BonusController : MonoBehaviour
             double start = 0;
             DOTween.To(() => start, (val) => start = val, DoubleGoal, .8f).OnUpdate(() =>
              {
-                 if(textObject) textObject.text = start.ToString("f2");
+                 if(textObject) textObject.text = start.ToString("f3");
              });
         }
 
