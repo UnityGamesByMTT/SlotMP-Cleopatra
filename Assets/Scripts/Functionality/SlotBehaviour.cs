@@ -97,6 +97,7 @@ public class SlotBehaviour : MonoBehaviour
     private bool IsTurboOn;
     private bool WasAutoSpinOn;
     private bool IsStopTweening;
+    private Tween BalanceTween;
     private void Start()
     {
         IsAutoSpin = false;
@@ -687,7 +688,7 @@ public class SlotBehaviour : MonoBehaviour
                 if (TotalWin_text) TotalWin_text.text = currentWin.ToString("f3");
                 if (BigWin_Text) BigWin_Text.text = currentWin.ToString("f3");
             });
-
+            BalanceTween?.Kill();
             DOTween.To(() => currentBal, (val) => currentBal = val, Balance, 0.8f).OnUpdate(() =>
             {
                 if (Balance_text) Balance_text.text = currentBal.ToString("f3");
@@ -720,7 +721,7 @@ public class SlotBehaviour : MonoBehaviour
 
         balance = balance - bet;
 
-        DOTween.To(() => initAmount, (val) => initAmount = val, balance, 0.3f).OnUpdate(() =>
+        BalanceTween=DOTween.To(() => initAmount, (val) => initAmount = val, balance, 0.3f).OnUpdate(() =>
         {
             if (Balance_text) Balance_text.text = initAmount.ToString("f3");
         });
