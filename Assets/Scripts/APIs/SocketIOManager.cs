@@ -84,6 +84,8 @@ public class SocketIOManager : MonoBehaviour
 
 #if UNITY_WEBGL && !UNITY_EDITOR
         Application.ExternalEval(@"
+        (function (){
+        
           if(window.ReactNativeWebView){
              try {
             if (!window.ReactNativeWebView || typeof window.ReactNativeWebView.postMessage !== 'function') {
@@ -132,8 +134,7 @@ public class SocketIOManager : MonoBehaviour
             window.ReactNativeWebView.postMessage('An error occurred');
             console.error('An error occurred:', error);
         }
-          }
-          else{
+          }else{
               window.addEventListener('message', function(event) {
                   if (event.data.type === 'authToken') {
                       var combinedData = JSON.stringify({
@@ -142,8 +143,10 @@ public class SocketIOManager : MonoBehaviour
                       });
                       // Send the combined data to Unity
                       SendMessage('SocketManager', 'ReceiveAuthToken', combinedData);
-                  }});");
+                  }});
           }
+        })()
+                  ");
         StartCoroutine(WaitForAuthToken(options));
 #else
     Func<SocketManager, Socket, object> authFunction = (manager, socket) =>
