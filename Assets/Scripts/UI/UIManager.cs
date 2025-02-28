@@ -5,8 +5,6 @@ using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Networking;
-using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
 
 public class UIManager : MonoBehaviour
 {
