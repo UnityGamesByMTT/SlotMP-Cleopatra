@@ -121,7 +121,7 @@ public class SocketIOManager : MonoBehaviour
                 cookie: injectedObj.token.trim()
             });
 
-            window.ReactNativeWebView.postMessage('AuthToken');
+            window.ReactNativeWebView.postMessage('authToken');
 
             // Send data to Unity, ensuring 'SendMessage' is available
             if (typeof SendMessage === 'function') {
@@ -295,15 +295,6 @@ public class SocketIOManager : MonoBehaviour
   internal void CloseSocket()
   {
     SendDataWithNamespace("EXIT");
-    
-    
-#if UNITY_WEBGL && !UNITY_EDITOR
-    Application.ExternalEval(@"
-      if(window.ReactNativeWebView){
-        window.ReactNativeWebView.postMessage('EXIT');
-      }
-    ");
-#endif
   }
 
   private void ParseResponse(string jsonObject)
@@ -355,6 +346,13 @@ public class SocketIOManager : MonoBehaviour
             this.manager.Close();
           }
           Application.ExternalCall("window.parent.postMessage", "onExit", "*");
+#if UNITY_WEBGL && !UNITY_EDITOR
+    Application.ExternalEval(@"
+      if(window.ReactNativeWebView){
+        window.ReactNativeWebView.postMessage('onExit');
+      }
+    ");
+#endif
           break;
         }
     }
