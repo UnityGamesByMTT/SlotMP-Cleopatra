@@ -295,9 +295,21 @@ public class SocketIOManager : MonoBehaviour
   internal void CloseSocket()
   {
     SendDataWithNamespace("EXIT");
+
+   }
+
+  internal void closeSocketCallReactnative()
+  {
+#if UNITY_WEBGL && !UNITY_EDITOR
+    Application.ExternalEval(@"
+      if(window.ReactNativeWebView){
+        window.ReactNativeWebView.postMessage('onExit');
+      }
+    ");
+#endif
   }
 
-  private void ParseResponse(string jsonObject)
+    private void ParseResponse(string jsonObject)
   {
     Debug.Log(jsonObject);
     Root myData = JsonConvert.DeserializeObject<Root>(jsonObject);
