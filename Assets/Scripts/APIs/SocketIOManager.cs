@@ -298,7 +298,7 @@ public class SocketIOManager : MonoBehaviour
 
    }
 
-  internal void closeSocketCallReactnative()
+  internal void ReactNativeCallOnFailedToConnect()
   {
 #if UNITY_WEBGL && !UNITY_EDITOR
     Application.ExternalEval(@"
