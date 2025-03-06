@@ -394,6 +394,7 @@ public class SocketIOManager : MonoBehaviour
 
     isLoaded = true;
     Application.ExternalCall("window.parent.postMessage", "OnEnter", "*");
+    Application.ExternalCall("window.ReactNativeWebView.postMessage", "OnEnter");
   }
 
   internal void AccumulateResult(double currBet)
