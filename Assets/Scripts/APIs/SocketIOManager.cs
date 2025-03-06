@@ -70,7 +70,7 @@ public class SocketIOManager : MonoBehaviour
 
   }
 
-   
+
   string myAuth = null;
 
   private void OpenSocket()
@@ -297,7 +297,7 @@ public class SocketIOManager : MonoBehaviour
   {
     SendDataWithNamespace("EXIT");
 
-   }
+  }
 
   internal void ReactNativeCallOnFailedToConnect()
   {
@@ -310,7 +310,7 @@ public class SocketIOManager : MonoBehaviour
 #endif
   }
 
-    private void ParseResponse(string jsonObject)
+  private void ParseResponse(string jsonObject)
   {
     Debug.Log(jsonObject);
     Root myData = JsonConvert.DeserializeObject<Root>(jsonObject);
@@ -384,7 +384,13 @@ public class SocketIOManager : MonoBehaviour
 
     isLoaded = true;
     Application.ExternalCall("window.parent.postMessage", "OnEnter", "*");
-    Application.ExternalCall("window.ReactNativeWebView.postMessage", "OnEnter");
+#if UNITY_WEBGL && !UNITY_EDITOR
+    Application.ExternalEval(@"
+      if(window.ReactNativeWebView){
+        window.ReactNativeWebView.postMessage('OnEnter');
+      }
+    ");
+#endif
   }
 
   internal void AccumulateResult(double currBet)
