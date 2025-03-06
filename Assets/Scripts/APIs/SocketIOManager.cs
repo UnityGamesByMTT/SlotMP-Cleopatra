@@ -309,16 +309,6 @@ public class SocketIOManager : MonoBehaviour
     ");
 #endif
   }
-    internal void closeSocketCallReactnative()
-    {
-#if UNITY_WEBGL && !UNITY_EDITOR
-    Application.ExternalEval(@"
-      if(window.ReactNativeWebView){
-        window.ReactNativeWebView.postMessage('onExit');
-      }
-    ");
-#endif
-    }
 
     private void ParseResponse(string jsonObject)
   {
