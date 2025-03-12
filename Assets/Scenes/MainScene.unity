@@ -6420,7 +6420,7 @@ MonoBehaviour:
   slotManager: {fileID: 2046803210}
   uiManager: {fileID: 377874625}
   bonusdata: []
-  testToken: 
+  testToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzkxOTI3OTgxYmU0MzlkMjkyYjg4OSIsInVzZXJuYW1lIjoiTWVodWwiLCJyb2xlIjoicGxheWVyIiwiaWF0IjoxNzQxNzU5NzYxLCJleHAiOjE3NDIzNjQ1NjF9.JcNt5wNU6n780AuQA7q5cTz2ESdLwLGBmw5acXVpO14
 --- !u!1 &500673622
 GameObject:
   m_ObjectHideFlags: 0
@@ -11706,7 +11706,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 751808323}
   m_OnClick:
     m_PersistentCalls:
