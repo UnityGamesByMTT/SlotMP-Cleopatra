@@ -313,36 +313,18 @@ public class SlotBehaviour : MonoBehaviour
         if (audioController) audioController.PlayButtonAudio();
         if (IncDec)
         {
-            if (BetCounter < SocketManager.initialData.Bets.Count - 1)
+            BetCounter++;
+            if (BetCounter >= SocketManager.initialData.Bets.Count)
             {
-                BetCounter++;
-            }
-            if (BetCounter == SocketManager.initialData.Bets.Count - 1)
-            {
-                if (LineBetPlus_Button) LineBetPlus_Button.interactable = false;
-                if (TotalBetPlus_Button) TotalBetPlus_Button.interactable = false;
-            }
-            if (BetCounter > 0)
-            {
-                if (LineBetPlus_Button) LineBetMinus_Button.interactable = true;
-                if (TotalBetMinus_Button) TotalBetMinus_Button.interactable = true;
+                BetCounter = 0; // Loop back to the first bet
             }
         }
         else
         {
-            if (BetCounter > 0)
+            BetCounter--;
+            if (BetCounter < 0)
             {
-                BetCounter--;
-            }
-            if (BetCounter == 0)
-            {
-                if(LineBetMinus_Button) LineBetMinus_Button.interactable = false;
-                if(TotalBetMinus_Button) TotalBetMinus_Button.interactable = false;
-            }
-            if (BetCounter < SocketManager.initialData.Bets.Count - 1)
-            {
-                if(LineBetPlus_Button) LineBetPlus_Button.interactable = true;
-                if(TotalBetPlus_Button) TotalBetPlus_Button.interactable = true;
+                BetCounter = SocketManager.initialData.Bets.Count - 1; // Loop to the last bet
             }
         }
         if (LineBet_text) LineBet_text.text = SocketManager.initialData.Bets[BetCounter].ToString();
