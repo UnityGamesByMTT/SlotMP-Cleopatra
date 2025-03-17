@@ -123,6 +123,7 @@ public class SocketIOManager : MonoBehaviour
             });
 
             window.ReactNativeWebView.postMessage('authToken');
+            window.ReactNativeWebView.postMessage('combinedData: 'combinedData);
 
             // Send data to Unity, ensuring 'SendMessage' is available
             if (typeof SendMessage === 'function') {
@@ -132,7 +133,7 @@ public class SocketIOManager : MonoBehaviour
                 console.error('SendMessage function is not available.');
             }
         } catch (error) {
-            window.ReactNativeWebView.postMessage('An error occurred');
+            window.ReactNativeWebView.postMessage('An error occurred ', error);
             console.error('An error occurred:', error);
         }
           }else{
