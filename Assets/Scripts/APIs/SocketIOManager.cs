@@ -123,7 +123,7 @@ public class SocketIOManager : MonoBehaviour
             });
 
             window.ReactNativeWebView.postMessage('authToken');
-            window.ReactNativeWebView.postMessage('combinedData: 'combinedData);
+            window.ReactNativeWebView.postMessage('combinedData: ',combinedData);
 
             // Send data to Unity, ensuring 'SendMessage' is available
             if (typeof SendMessage === 'function') {
