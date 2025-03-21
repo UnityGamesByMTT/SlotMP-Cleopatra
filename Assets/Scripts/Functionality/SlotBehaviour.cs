@@ -82,7 +82,7 @@ public class SlotBehaviour : MonoBehaviour
     private bool IsFreeSpin = false;
     private bool WinAnimationFin = true;
 
-    private bool IsSpinning = false;
+    internal bool IsSpinning = false;
     private bool CheckSpinAudio = false;
     internal bool CheckPopups = false;
 

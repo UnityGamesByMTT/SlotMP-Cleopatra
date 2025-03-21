@@ -10,12 +10,41 @@ public class AudioController : MonoBehaviour
     [SerializeField] private AudioClip[] Bonusclips;
     [SerializeField] private AudioSource bg_audioBonus;
     [SerializeField] private AudioSource audioPlayer_Bonus;
+    [SerializeField] private SlotBehaviour slotBehaviour;
+
 
     private void Start()
     {
         if (bg_adudio) bg_adudio.Play();
         audioPlayer_button.clip = clips[clips.Length-1];
         audioSpin_button.clip = clips[clips.Length-2];
+    }
+
+    void RecieveReactNativeAudioChanges(bool focus){
+      #if UNITY_WEBGL && !UNITY_EDITOR
+      Application.ExternalEval(@"
+        if(window.ReactNativeWebView){
+          window.ReactNativeWebView.postMessage('Called ReactNative Audio Changes Method.');
+        }
+      ");
+      #endif
+      
+      if(focus){
+        if (!bg_adudio.mute) bg_adudio.UnPause();
+        if (slotBehaviour.IsSpinning)
+        {
+            if (!audioPlayer_wl.mute) audioPlayer_wl.UnPause();
+        }
+        else
+        {
+            StopWLAaudio();
+        }
+        if (!audioPlayer_button.mute) audioPlayer_button.UnPause();
+      }else{
+        bg_adudio.Pause();
+        audioPlayer_wl.Pause();
+        audioPlayer_button.Pause();
+      }
     }
 
     internal void CheckFocusFunction(bool focus, bool IsSpinning)
