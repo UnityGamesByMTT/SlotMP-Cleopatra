@@ -7,6 +7,7 @@ using Best.SocketIO;
 using Best.SocketIO.Events;
 using Newtonsoft.Json.Linq;
 using System.Runtime.Serialization;
+using Unity.VisualScripting;
 
 public class SocketIOManager : MonoBehaviour
 {
@@ -23,14 +24,15 @@ public class SocketIOManager : MonoBehaviour
   [SerializeField] internal List<string> bonusdata = null;
   internal bool isResultdone = false;
   internal List<List<int>> LineData = null;
-  protected string nameSpace="game"; //BackendChanges
+  // protected string nameSpace="game"; //BackendChanges
+  protected string nameSpace=""; //BackendChanges
   private Socket gameSocket; //BackendChanges
 
   private SocketManager manager;
 
   protected string SocketURI = null;
   // protected string TestSocketURI = "https://game-crm-rtp-backend.onrender.com/";
-  protected string TestSocketURI = "http://localhost:5001/";
+  protected string TestSocketURI = "http://localhost:5002/";
 
   [SerializeField]
   private string testToken;
@@ -128,7 +130,7 @@ public class SocketIOManager : MonoBehaviour
             var combinedData = JSON.stringify({
                 socketURL: injectedObj.socketURL.trim(),
                 cookie: injectedObj.token.trim(),
-                nameSpace: injectedObj.nameSpace.trim()
+                nameSpace: injectedObj.nameSpace?.trim()
             });
 
             window.ReactNativeWebView.postMessage('authToken');
@@ -215,11 +217,12 @@ public class SocketIOManager : MonoBehaviour
 #else
     this.manager = new SocketManager(new Uri(SocketURI), options);
 #endif
-    Debug.Log(nameSpace); //BackendChanges Start
-    if(string.IsNullOrEmpty(nameSpace))
-    {
+    
+    if(string.IsNullOrEmpty(nameSpace)){  //BackendChanges Start
         gameSocket=this.manager.Socket;
-    }else{
+    }
+    else{
+      print("nameSpace: " + nameSpace);
       gameSocket=this.manager.GetSocket("/"+nameSpace);
     }
     // Set subscriptions
