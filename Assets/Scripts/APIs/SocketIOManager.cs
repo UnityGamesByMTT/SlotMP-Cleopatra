@@ -233,7 +233,20 @@ public class SocketIOManager : MonoBehaviour
     gameSocket.On<string>("internalError", OnSocketError);
     gameSocket.On<string>("alert", OnSocketAlert);
     gameSocket.On<string>("AnotherDevice", OnSocketOtherDevice); //BackendChanges Finish
+    gameSocket.On<string>("appBackground", MuteAudio); //BackendChanges Finish
     // Start connecting to the server
+  }
+
+  void MuteAudio(string data){
+    Debug.Log("MuteAudio Event called");
+    #if UNITY_WEBGL && !UNITY_EDITOR
+    Application.ExternalEval(@"
+      if(window.ReactNativeWebView){
+        window.ReactNativeWebView.postMessage('MuteAudioEvent Called');
+      }
+    ");
+    #endif    
+    slotManager.audioController.CheckFocusFunction(false, false);
   }
 
   // Connected event handler implementation

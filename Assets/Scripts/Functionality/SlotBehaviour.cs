@@ -50,7 +50,7 @@ public class SlotBehaviour : MonoBehaviour
 
 
     [Header("Audio Management")]
-    [SerializeField] private AudioController audioController;
+    [SerializeField] internal AudioController audioController;
 
     [SerializeField] private UIManager uiManager;
 
