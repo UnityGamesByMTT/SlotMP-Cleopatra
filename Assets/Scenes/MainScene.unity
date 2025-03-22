@@ -6420,7 +6420,7 @@ MonoBehaviour:
   slotManager: {fileID: 2046803210}
   uiManager: {fileID: 377874625}
   bonusdata: []
-  testToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzkxOTI3OTgxYmU0MzlkMjkyYjg4OSIsInVzZXJuYW1lIjoiTWVodWwiLCJyb2xlIjoicGxheWVyIiwiaWF0IjoxNzQxNzU5NzYxLCJleHAiOjE3NDIzNjQ1NjF9.JcNt5wNU6n780AuQA7q5cTz2ESdLwLGBmw5acXVpO14
+  testToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzkxOTI3OTgxYmU0MzlkMjkyYjg4OSIsInVzZXJuYW1lIjoiTWVodWwiLCJyb2xlIjoicGxheWVyIiwiaWF0IjoxNzQyNjIzNzgyLCJleHAiOjE3NDMyMjg1ODJ9.8J5zstcSAx_emRNg1iWGKaL0j668r2zXNBnDK6euKOM
 --- !u!1 &500673622
 GameObject:
   m_ObjectHideFlags: 0
@@ -30027,6 +30027,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 317ac723d1c9b4a09a52c3b9de61d4a6, type: 3}
   bg_audioBonus: {fileID: 2088709731818720374}
   audioPlayer_Bonus: {fileID: 4701576512886553455}
+  slotBehaviour: {fileID: 0}
 --- !u!82 &1099861978960025974
 AudioSource:
   m_ObjectHideFlags: 0
