@@ -146,7 +146,6 @@ public class SocketIOManager : MonoBehaviour
         }
           }else{
               window.addEventListener('message', function(event) {
-                  console.log("Data sent by platform: " + event.data);
                   if (event.data.type === 'authToken') {
                       var combinedData = JSON.stringify({
                           cookie: event.data.cookie,
