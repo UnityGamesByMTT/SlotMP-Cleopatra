@@ -91,8 +91,8 @@ public class SocketIOManager : MonoBehaviour
 
     Application.ExternalCall("window.parent.postMessage", "authToken", "*");
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-        Application.ExternalEval(@" //BackendChanges Start
+#if UNITY_WEBGL && !UNITY_EDITOR //BackendChanges Start
+        Application.ExternalEval(@" 
         (function (){
         
           if(window.ReactNativeWebView){
@@ -146,6 +146,7 @@ public class SocketIOManager : MonoBehaviour
         }
           }else{
               window.addEventListener('message', function(event) {
+                  console.log("Data sent by platform: " + event.data);
                   if (event.data.type === 'authToken') {
                       var combinedData = JSON.stringify({
                           cookie: event.data.cookie,
@@ -157,9 +158,9 @@ public class SocketIOManager : MonoBehaviour
                   }});
           }
         })()
-                  "); //BackendChanges Finish
+                  "); 
         StartCoroutine(WaitForAuthToken(options)); 
-#else
+#else //BackendChanges Finish
     Func<SocketManager, Socket, object> authFunction = (manager, socket) =>
     {
       return new
@@ -341,16 +342,16 @@ public class SocketIOManager : MonoBehaviour
   private void SendDataWithNamespace(string eventName, string json = null)
   {
     // Send the message
-    if (this.manager.Socket != null && this.manager.Socket.IsOpen)
+    if (gameSocket != null && gameSocket.IsOpen) //BackendChanges
     {
       if (json != null)
       {
-        this.manager.Socket.Emit(eventName, json);
+        gameSocket.Emit(eventName, json);
         Debug.Log("JSON data sent: " + json);
       }
       else
       {
-        this.manager.Socket.Emit(eventName);
+        gameSocket.Emit(eventName);
       }
     }
     else
@@ -419,7 +420,7 @@ public class SocketIOManager : MonoBehaviour
         }
       case "ExitUser":
         {
-          if (this.manager != null)
+          if (gameSocket != null) //BackendChanges
           {
             Debug.Log("Dispose my Socket");
             this.manager.Close();
