@@ -10,12 +10,8 @@ using System.Runtime.Serialization;
 
 public class SocketIOManager : MonoBehaviour
 {
-  [SerializeField]
-  private SlotBehaviour slotManager;
-
-  [SerializeField]
-  private UIManager uiManager;
-
+  [SerializeField] private SlotBehaviour slotManager;
+  [SerializeField] private UIManager uiManager;
   internal GameData initialData = null;
   internal UIData initUIData = null;
   internal GameData resultData = null;
@@ -24,25 +20,18 @@ public class SocketIOManager : MonoBehaviour
   internal bool isResultdone = false;
   internal List<List<int>> LineData = null;
   // protected string nameSpace="game"; //BackendChanges
-  protected string nameSpace=""; //BackendChanges
+  protected string nameSpace = ""; //BackendChanges
   private Socket gameSocket; //BackendChanges
-
   private SocketManager manager;
-
   protected string SocketURI = null;
   // protected string TestSocketURI = "https://game-crm-rtp-backend.onrender.com/";
   protected string TestSocketURI = "http://localhost:5002/";
-
-  [SerializeField]
-  private string testToken;
-
+  [SerializeField] internal JSFunctCalls JSManager;
+  [SerializeField] private string testToken;
   protected string gameID = "SL-CLEO";
   // protected string gameID = "";
-
   internal bool isLoaded = false;
-
   internal bool SetInit = false;
-
   private const int maxReconnectionAttempts = 6;
   private readonly TimeSpan reconnectionDelay = TimeSpan.FromSeconds(10);
 
@@ -51,13 +40,6 @@ public class SocketIOManager : MonoBehaviour
     //Debug.unityLogger.logEnabled = false;
     isLoaded = false;
     SetInit = false;
-    #if UNITY_WEBGL && !UNITY_EDITOR
-    Application.ExternalEval(@"
-      if(window.ReactNativeWebView){
-        window.ReactNativeWebView.postMessage('This is the new version of the game 2');
-      }
-    ");
-    #endif
   }
 
   private void Start()
@@ -75,7 +57,7 @@ public class SocketIOManager : MonoBehaviour
     // Proceed with connecting to the server using myAuth and socketURL
     SocketURI = data.socketURL;
     myAuth = data.cookie;
-    nameSpace=data.nameSpace; //BackendChanges
+    nameSpace = data.nameSpace; //BackendChanges
   }
 
 
@@ -90,77 +72,10 @@ public class SocketIOManager : MonoBehaviour
     options.Reconnection = true;
     options.ConnectWith = Best.SocketIO.Transports.TransportTypes.WebSocket; //BackendChanges
 
-    Application.ExternalCall("window.parent.postMessage", "authToken", "*");
-
-#if UNITY_WEBGL && !UNITY_EDITOR //BackendChanges Start
-        Application.ExternalEval(@" 
-        (function (){
-        
-          if(window.ReactNativeWebView){
-             try {
-            if (!window.ReactNativeWebView || typeof window.ReactNativeWebView.postMessage !== 'function') {
-                window.ReactNativeWebView.postMessage('ReactNativeWebView is not available.');
-                console.error('ReactNativeWebView is not available.');
-                return;
-            }
-
-            if (typeof window.ReactNativeWebView.injectedObjectJson !== 'function') {
-                window.ReactNativeWebView.postMessage('ReactNativeWebView.injectedObjectJson is not a function.');
-                console.error('ReactNativeWebView.injectedObjectJson is not a function.');
-                return;
-            }
-
-            var injectedObj = JSON.parse(window.ReactNativeWebView.injectedObjectJson())
-            window.ReactNativeWebView.postMessage('Injected obj : ' + injectedObj);
-
-            if (!injectedObj || typeof injectedObj !== 'object') {
-                window.ReactNativeWebView.postMessage('Injected object is invalid.');
-                console.error('Injected object is invalid.');
-                return;
-            }
-
-            // Expected properties: 'socketURL' and 'token'
-            if (typeof injectedObj.socketURL !== 'string' || typeof injectedObj.token !== 'string') {
-                window.ReactNativeWebView.postMessage('Injected object properties are invalid.');
-                console.error('Injected object properties are invalid.');
-                return;
-            }
-
-            var combinedData = JSON.stringify({
-                socketURL: injectedObj.socketURL.trim(),
-                cookie: injectedObj.token.trim(),
-                nameSpace: injectedObj.nameSpace?.trim()
-            });
-
-            window.ReactNativeWebView.postMessage('authToken');
-
-            // Send data to Unity, ensuring 'SendMessage' is available
-            if (typeof SendMessage === 'function') {
-                SendMessage('SocketManager', 'ReceiveAuthToken', combinedData);
-            } else {
-                window.ReactNativeWebView.postMessage('SendMessage function is not available.');
-                console.error('SendMessage function is not available.');
-            }
-        } catch (error) {
-            window.ReactNativeWebView.postMessage(JSON.stringify(error));
-            console.error('An error occurred:', error);
-        }
-          }else{
-              window.addEventListener('message', function(event) {
-                  if (event.data.type === 'authToken') {
-                      var combinedData = JSON.stringify({
-                          cookie: event.data.cookie,
-                          socketURL: event.data.socketURL,
-                          nameSpace: event.data?.nameSpace ? event.data.nameSpace : ''
-                      });
-                      // Send the combined data to Unity
-                      SendMessage('SocketManager', 'ReceiveAuthToken', combinedData);
-                  }});
-          }
-        })()
-                  "); 
-        StartCoroutine(WaitForAuthToken(options)); 
-#else //BackendChanges Finish
+#if UNITY_WEBGL && !UNITY_EDITOR
+    JSManager.SendCustomMessage("authToken");
+    StartCoroutine(WaitForAuthToken(options));
+#else
     Func<SocketManager, Socket, object> authFunction = (manager, socket) =>
     {
       return new
@@ -216,13 +131,15 @@ public class SocketIOManager : MonoBehaviour
 #else
     this.manager = new SocketManager(new Uri(SocketURI), options);
 #endif
-    
-    if(string.IsNullOrEmpty(nameSpace)){  //BackendChanges Start
-        gameSocket=this.manager.Socket;
+
+    if (string.IsNullOrEmpty(nameSpace) | string.IsNullOrWhiteSpace(nameSpace))
+    {
+      gameSocket = this.manager.Socket;
     }
-    else{
-      print("nameSpace: " + nameSpace);
-      gameSocket=this.manager.GetSocket("/"+nameSpace);
+    else
+    {
+      Debug.Log("Namespace used :" + nameSpace);
+      gameSocket = this.manager.GetSocket("/" + nameSpace);
     }
     // Set subscriptions
     gameSocket.On<ConnectResponse>(SocketIOEventTypes.Connect, OnConnected);
@@ -237,15 +154,9 @@ public class SocketIOManager : MonoBehaviour
     // Start connecting to the server
   }
 
-  void MuteAudio(string data){
+  void MuteAudio(string data)
+  {
     Debug.Log("MuteAudio Event called");
-    #if UNITY_WEBGL && !UNITY_EDITOR
-    Application.ExternalEval(@"
-      if(window.ReactNativeWebView){
-        window.ReactNativeWebView.postMessage('MuteAudioEvent Called');
-      }
-    ");
-    #endif    
     slotManager.audioController.CheckFocusFunction(false, false);
   }
 
@@ -254,13 +165,6 @@ public class SocketIOManager : MonoBehaviour
   {
     Debug.Log("Connected!");
     SendPing();
-    #if UNITY_WEBGL && !UNITY_EDITOR
-    Application.ExternalEval(@"
-      if(window.ReactNativeWebView){
-        window.ReactNativeWebView.postMessage('Game Socket Connected');
-      }
-    ");
-    #endif
   }
 
   private void OnDisconnected(string response)
@@ -268,37 +172,16 @@ public class SocketIOManager : MonoBehaviour
     Debug.Log("Disconnected from the server");
     StopAllCoroutines();
     uiManager.DisconnectionPopup(false);
-#if UNITY_WEBGL && !UNITY_EDITOR
-        Application.ExternalEval(@"
-          if(window.ReactNativeWebView){
-            window.ReactNativeWebView.postMessage('Game Socket OnDisconnected');
-          }
-        ");
-#endif
   }
 
   private void OnError(string response)
   {
     Debug.LogError("Error: " + response);
-    #if UNITY_WEBGL && !UNITY_EDITOR
-    Application.ExternalEval(@"
-      if(window.ReactNativeWebView){
-        window.ReactNativeWebView.postMessage('Game Socket OnError');
-      }
-    ");
-    #endif
   }
 
   private void OnListenEvent(string data)
   {
     ParseResponse(data);
-    #if UNITY_WEBGL && !UNITY_EDITOR
-    Application.ExternalEval(@"
-      if(window.ReactNativeWebView){
-        window.ReactNativeWebView.postMessage('Game Socket OnListenEvent');
-      }
-    ");
-    #endif
   }
 
   private void OnSocketState(bool state)
@@ -309,38 +192,17 @@ public class SocketIOManager : MonoBehaviour
   private void OnSocketError(string data)
   {
     Debug.Log("Received error with data: " + data);
-    #if UNITY_WEBGL && !UNITY_EDITOR
-    Application.ExternalEval(@"
-      if(window.ReactNativeWebView){
-        window.ReactNativeWebView.postMessage('Game Socket OnSocketError');
-      }
-    ");
-    #endif
   }
 
   private void OnSocketAlert(string data)
   {
     Debug.Log("Received alert with data: " + data);
-    #if UNITY_WEBGL && !UNITY_EDITOR
-    Application.ExternalEval(@"
-      if(window.ReactNativeWebView){
-        window.ReactNativeWebView.postMessage('Game Socket Alert');
-      }
-    ");
-    #endif
   }
 
   private void OnSocketOtherDevice(string data)
   {
     Debug.Log("Received Device Error with data: " + data);
     uiManager.ADfunction();
-    #if UNITY_WEBGL && !UNITY_EDITOR
-    Application.ExternalEval(@"
-      if(window.ReactNativeWebView){
-        window.ReactNativeWebView.postMessage('Game Socket OnSocketOtherDevice');
-      }
-    ");
-    #endif
   }
 
   private void SendPing()
@@ -383,11 +245,7 @@ public class SocketIOManager : MonoBehaviour
   internal void ReactNativeCallOnFailedToConnect() //BackendChanges
   {
 #if UNITY_WEBGL && !UNITY_EDITOR
-    Application.ExternalEval(@"
-      if(window.ReactNativeWebView){
-        window.ReactNativeWebView.postMessage('onExit');
-      }
-    ");
+    JSManager.SendCustomMessage("onExit");
 #endif
   }
 
@@ -439,13 +297,8 @@ public class SocketIOManager : MonoBehaviour
             Debug.Log("Dispose my Socket");
             this.manager.Close();
           }
-          Application.ExternalCall("window.parent.postMessage", "onExit", "*");
-#if UNITY_WEBGL && !UNITY_EDITOR //BackendChanges
-    Application.ExternalEval(@"
-      if(window.ReactNativeWebView){
-        window.ReactNativeWebView.postMessage('onExit');
-      }
-    ");
+#if UNITY_WEBGL && !UNITY_EDITOR
+          JSManager.SendCustomMessage("onExit");
 #endif
           break;
         }
@@ -464,13 +317,8 @@ public class SocketIOManager : MonoBehaviour
     slotManager.SetInitialUI();
 
     isLoaded = true;
-    Application.ExternalCall("window.parent.postMessage", "OnEnter", "*");
-#if UNITY_WEBGL && !UNITY_EDITOR //BackendChanges
-    Application.ExternalEval(@"
-      if(window.ReactNativeWebView){
-        window.ReactNativeWebView.postMessage('OnEnter');
-      }
-    ");
+#if UNITY_WEBGL && !UNITY_EDITOR
+        JSManager.SendCustomMessage("OnEnter");
 #endif
   }
 
