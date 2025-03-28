@@ -5,8 +5,6 @@ using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Networking;
-using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
 
 public class UIManager : MonoBehaviour
 {
@@ -97,7 +95,7 @@ public class UIManager : MonoBehaviour
         if (LBExit_Button) LBExit_Button.onClick.AddListener(delegate { ClosePopup(LBPopup_Object); });
 
         if (CloseDisconnect_Button) CloseDisconnect_Button.onClick.RemoveAllListeners();
-        if (CloseDisconnect_Button) CloseDisconnect_Button.onClick.AddListener(CallOnExitFunction);
+        if (CloseDisconnect_Button) CloseDisconnect_Button.onClick.AddListener(delegate { CallOnExitFunction(); socketManager.ReactNativeCallOnFailedToConnect(); }); //BackendChanges
 
         if (Sound_Button) Sound_Button.onClick.RemoveAllListeners();
         if (Sound_Button) Sound_Button.onClick.AddListener(delegate

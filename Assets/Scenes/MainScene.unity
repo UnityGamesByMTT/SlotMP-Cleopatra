@@ -6420,7 +6420,8 @@ MonoBehaviour:
   slotManager: {fileID: 2046803210}
   uiManager: {fileID: 377874625}
   bonusdata: []
-  testToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3N2JhM2QzOTgxYmU0MzlkMjkyYzgzYSIsInVzZXJuYW1lIjoiTWVldCIsInJvbGUiOiJwbGF5ZXIiLCJpYXQiOjE3MzYxNTYxNzMsImV4cCI6MTczNjc2MDk3M30.PTWPHLGbExTm5CaObHGuf8XBh6EcKOSpNECAIqog_m0
+  JSManager: {fileID: 1604285695}
+  testToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzkxOTI3OTgxYmU0MzlkMjkyYjg4OSIsInVzZXJuYW1lIjoiTWVodWwiLCJyb2xlIjoicGxheWVyIiwiaWF0IjoxNzQyNjIzNzgyLCJleHAiOjE3NDMyMjg1ODJ9.8J5zstcSAx_emRNg1iWGKaL0j668r2zXNBnDK6euKOM
 --- !u!1 &500673622
 GameObject:
   m_ObjectHideFlags: 0
@@ -11706,7 +11707,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 751808323}
   m_OnClick:
     m_PersistentCalls:
@@ -23250,6 +23251,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1585514364}
   m_CullTransparentMesh: 1
+--- !u!1 &1604285694
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1604285696}
+  - component: {fileID: 1604285695}
+  m_Layer: 0
+  m_Name: JSFuncCalls
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1604285695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604285694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03b28d58a091b4d729e13aa15c64e3cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1604285696
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604285694}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.36447242, y: -0.04064646, z: 1853.4325}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1613587968
 GameObject:
   m_ObjectHideFlags: 0
@@ -30027,6 +30072,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 317ac723d1c9b4a09a52c3b9de61d4a6, type: 3}
   bg_audioBonus: {fileID: 2088709731818720374}
   audioPlayer_Bonus: {fileID: 4701576512886553455}
+  slotBehaviour: {fileID: 0}
 --- !u!82 &1099861978960025974
 AudioSource:
   m_ObjectHideFlags: 0
@@ -30686,3 +30732,4 @@ SceneRoots:
   - {fileID: 65498558}
   - {fileID: 8217964018994044620}
   - {fileID: 5907248699278876388}
+  - {fileID: 1604285696}
