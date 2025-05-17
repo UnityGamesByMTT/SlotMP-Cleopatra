@@ -40,6 +40,7 @@ public class SocketIOManager : MonoBehaviour
     //Debug.unityLogger.logEnabled = false;
     isLoaded = false;
     SetInit = false;
+    StartCoroutine(PrintApplicationURL());
   }
 
   private void Start()
@@ -60,6 +61,14 @@ public class SocketIOManager : MonoBehaviour
     nameSpace = data.nameSpace; //BackendChanges
   }
 
+  IEnumerator PrintApplicationURL()
+  {
+    while (true)
+    {
+      Debug.Log("Application URL: " + Application.absoluteURL);
+      yield return new WaitForSeconds(5f);
+    } 
+  }
 
   string myAuth = null;
 
