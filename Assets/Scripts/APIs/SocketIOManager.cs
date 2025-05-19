@@ -61,14 +61,14 @@ public class SocketIOManager : MonoBehaviour
     nameSpace = data.nameSpace; //BackendChanges
   }
 
-  IEnumerator PrintApplicationURL()
-  {
-    while (true)
-    {
-      Debug.Log("Application URL: " + Application.absoluteURL);
-      yield return new WaitForSeconds(5f);
-    } 
-  }
+  // IEnumerator PrintApplicationURL() 
+  // {
+  //   while (true)
+  //   {
+  //       Debug.Log("Application URL: " + Application.absoluteURL);  Unity API to get the URL
+  //     yield return new WaitForSeconds(5f);
+  //   } 
+  // }
 
   string myAuth = null;
 
