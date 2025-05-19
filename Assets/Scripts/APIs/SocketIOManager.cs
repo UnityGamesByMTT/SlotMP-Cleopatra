@@ -93,6 +93,7 @@ public class SocketIOManager : MonoBehaviour
         token = testToken,
       };
     };
+    options.Auth = webAuthFunction;
     #else
     Func<SocketManager, Socket, object> authFunction = (manager, socket) =>
     {
