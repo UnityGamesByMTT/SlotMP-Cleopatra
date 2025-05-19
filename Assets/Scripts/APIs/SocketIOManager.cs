@@ -40,7 +40,6 @@ public class SocketIOManager : MonoBehaviour
     //Debug.unityLogger.logEnabled = false;
     isLoaded = false;
     SetInit = false;
-    StartCoroutine(PrintApplicationURL());
   }
 
   private void Start()
