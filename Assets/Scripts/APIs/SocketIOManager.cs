@@ -5,9 +5,6 @@ using System;
 using Newtonsoft.Json;
 using Best.SocketIO;
 using Best.SocketIO.Events;
-using Newtonsoft.Json.Linq;
-using System.Runtime.Serialization;
-using Unity.VisualScripting.Antlr3.Runtime;
 
 public class SocketIOManager : MonoBehaviour
 {
@@ -20,13 +17,13 @@ public class SocketIOManager : MonoBehaviour
   [SerializeField] internal List<string> bonusdata = null;
   internal bool isResultdone = false;
   internal List<List<int>> LineData = null;
-  protected string nameSpace="playground"; //BackendChanges
+  protected string nameSpace = "playground"; //BackendChanges
   // protected string nameSpace; //Backe/ndChanges
   private Socket gameSocket; //BackendChanges
   private SocketManager manager;
   protected string SocketURI = null;
   // protected string TestSocketURI = "http://localhost:5001/";
-  protected string TestSocketURI = "https://r90g5j1g-5000.inc1.devtunnels.ms/"; 
+  protected string TestSocketURI = "https://r90g5j1g-5000.inc1.devtunnels.ms/";
   [SerializeField] internal JSFunctCalls JSManager;
   [SerializeField] private string testToken;
   protected string gameID = "SL-CLEO";
@@ -82,10 +79,21 @@ public class SocketIOManager : MonoBehaviour
     options.Reconnection = true;
     options.ConnectWith = Best.SocketIO.Transports.TransportTypes.WebSocket; //BackendChanges
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-    JSManager.SendCustomMessage("authToken");
-    StartCoroutine(WaitForAuthToken(options));
-#else
+    // JSManager.SendCustomMessage("authToken");
+    // StartCoroutine(WaitForAuthToken(options));
+    #if UNITY_WEBGL && !UNITY_EDITOR
+    string url = Application.absoluteURL;
+    Debug.Log("Unity URL : " + url);
+    ExtractUrlAndToken(url);
+
+    Func<SocketManager, Socket, object> webAuthFunction = (manager, socket) =>
+    {
+      return new
+      {
+        token = testToken,
+      };
+    };
+    #else
     Func<SocketManager, Socket, object> authFunction = (manager, socket) =>
     {
       return new
@@ -94,9 +102,9 @@ public class SocketIOManager : MonoBehaviour
       };
     };
     options.Auth = authFunction;
+    #endif
     // Proceed with connecting to the server
     SetupSocketManager(options);
-#endif
   }
 
 
@@ -268,8 +276,8 @@ public class SocketIOManager : MonoBehaviour
   void ParseResultData(string json)
   {
     ResultData ConvertedData = JsonConvert.DeserializeObject<ResultData>(json);
-    
-    resultData =new GameData();
+
+    resultData = new GameData();
     resultData.ResultReel = ConvertedData.matrix;
     isResultdone = true;
   }
@@ -335,7 +343,7 @@ public class SocketIOManager : MonoBehaviour
     uiManager.InitialiseUIData(initUIData.paylines);
   }
 
-  private void PopulateSlotSocket( List<string> LineIds)
+  private void PopulateSlotSocket(List<string> LineIds)
   {
     slotManager.shuffleInitialMatrix();
 
@@ -421,6 +429,37 @@ public class SocketIOManager : MonoBehaviour
     }
 
     return transformedList;
+  }
+
+  public void ExtractUrlAndToken(string fullUrl)
+  {
+    Uri uri = new Uri(fullUrl);
+    string query = uri.Query; // Gets the query part, e.g., "?url=http://localhost:5000&token=e5ffa84216be4972a85fff1d266d36d0"
+
+    Dictionary<string, string> queryParams = new Dictionary<string, string>();
+    string[] pairs = query.TrimStart('?').Split('&');
+
+    foreach (string pair in pairs)
+    {
+      string[] kv = pair.Split('=');
+      if (kv.Length == 2)
+      {
+        queryParams[kv[0]] = Uri.UnescapeDataString(kv[1]);
+      }
+    }
+
+    if (queryParams.TryGetValue("url", out string extractedUrl) &&
+        queryParams.TryGetValue("token", out string token))
+    {
+      Debug.Log("Extracted URL: " + extractedUrl);
+      Debug.Log("Extracted Token: " + token);
+      testToken = token;
+      SocketURI = extractedUrl;
+    }
+    else
+    {
+      Debug.LogError("URL or token not found in query parameters.");
+    }
   }
 }
 
